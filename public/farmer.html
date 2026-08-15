@@ -40,12 +40,15 @@
           <p class="muted" style="margin:0">Mmapula Fresh Produce · Gaborone · <span data-season-name>—</span></p>
         </div>
         <div class="stat" style="min-width:240px">
-          <div class="k">Total across all wallets</div>
+          <div class="k">Total across wallets and banks</div>
           <div class="v mono" id="totalBalance">P0.00</div>
         </div>
       </div>
 
       <div class="grid-3" id="walletCards"></div>
+      <h3 style="margin:26px 0 12px">Bank accounts</h3>
+      <div class="grid-2" id="bankCards"></div>
+      <p class="small muted" style="margin-top:12px">AgriWise also accepts Visa, Mastercard, PayPal and SWIFT wires from buyers; those settle into the bank account you mark as primary.</p>
     </div>
   </section>
 
@@ -55,10 +58,10 @@
         <!-- Cross-wallet transfer -->
         <div class="card" id="transfer">
           <div class="card-head">
-            <h3>Cross-wallet transfer</h3>
+            <h3>Cross-network transfer</h3>
             <span class="pill ochre">The missing tunnel</span>
           </div>
-          <p class="muted small">Botswana wallets don't talk to each other. AgriWise settles between them so a payment received on one wallet can land on another.</p>
+          <p class="muted small">Botswana wallets don't talk to each other, and moving wallet takings into a bank is slow. AgriWise settles between Orange Money, Smega, MyZaka and your FNB or ABSA account.</p>
           <div class="route-line">
             <span id="routeFrom">MyZaka</span>
             <span class="arrow">⟶</span>
@@ -66,11 +69,11 @@
           </div>
           <div class="field-row">
             <div class="field">
-              <label for="fromWallet">From</label>
+              <label for="fromWallet">From account</label>
               <select id="fromWallet"></select>
             </div>
             <div class="field">
-              <label for="toWallet">To</label>
+              <label for="toWallet">To account</label>
               <select id="toWallet"></select>
             </div>
           </div>
@@ -80,7 +83,7 @@
               <input id="amount" type="number" min="1" step="0.01" value="300" />
             </div>
             <div class="field">
-              <label for="destMsisdn">Destination number</label>
+              <label for="destMsisdn">Destination number or account</label>
               <input id="destMsisdn" type="tel" value="76 214 889" />
             </div>
           </div>
@@ -109,7 +112,7 @@
             <div class="chat-log" id="chatLog"></div>
             <div class="chat-suggestions" id="chatChips"></div>
             <form class="chat-input" id="chatForm">
-              <input id="chatInput" type="text" placeholder="Ask about next season, prices, demand or ABSA loans…" autocomplete="off" />
+              <input id="chatInput" type="text" placeholder="Ask about next season, prices, payment methods or ABSA loans" autocomplete="off" />
               <button class="btn btn-primary" type="submit">Ask</button>
             </form>
           </div>
@@ -160,9 +163,20 @@
                 <input id="adSmega" type="tel" placeholder="71 000 000" />
               </div>
             </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="adMyzaka">MyZaka number</label>
+                <input id="adMyzaka" type="tel" placeholder="74 000 000" />
+              </div>
+              <div class="field">
+                <label for="adBank">Bank</label>
+                <select id="adBank"></select>
+              </div>
+            </div>
             <div class="field">
-              <label for="adMyzaka">MyZaka number</label>
-              <input id="adMyzaka" type="tel" placeholder="74 000 000" />
+              <label for="adAccount">Bank account number</label>
+              <input id="adAccount" type="text" placeholder="1042 887 331" />
+              <p class="small muted" style="margin:6px 0 0">Card and PayPal payments from buyers settle into this account.</p>
             </div>
             <div class="field">
               <label for="adImages">Photos of your stall &amp; produce</label>

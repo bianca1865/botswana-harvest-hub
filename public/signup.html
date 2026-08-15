@@ -96,18 +96,12 @@
               </div>
             </div>
 
-            <div class="field-row">
-              <div class="field">
-                <label for="sPaypal">PayPal email</label>
-                <input id="sPaypal" type="email" placeholder="you@example.com" />
-              </div>
-              <div class="field">
-                <label for="sPreferred">Preferred payment method</label>
-                <select id="sPreferred"></select>
-              </div>
+            <div class="field">
+              <label for="sPreferred">Preferred payment method</label>
+              <select id="sPreferred"></select>
             </div>
             <button class="btn btn-primary btn-block" type="submit">Create account</button>
-            <p class="small muted" style="margin-top:12px">Prototype signup — details are saved on this device only, no real account is created.</p>
+            <p class="small muted" style="margin-top:12px">Prototype signup. Details stay on this device.</p>
           </form>
         </div>
 
@@ -122,7 +116,7 @@
 
 <footer class="site-footer">
   <div class="wrap">
-    <div class="footer-bottom">© <span data-year></span> AgriWise · Gaborone, Botswana · Prototype build</div>
+    <div class="footer-bottom">© <span data-year></span> AgriWise · Prototype build</div>
   </div>
 </footer>
 
@@ -134,18 +128,18 @@
     let role = params.get("role") === "consumer" ? "consumer" : params.get("role") === "farmer" ? "farmer" : null;
 
     const BLURB = {
-      farmer: ["One balance across wallets and your FNB or ABSA account",
-               "Sweeps between wallets and banks with transparent fees",
-               "Season-aware planting and pricing guidance",
-               "AI advisor for next season's demand",
-               "Loan-readiness pack for ABSA and other banks",
-               "Advertise your stall to shoppers nearby"],
-      consumer: ["Browse advertised produce stalls like a marketplace",
-                 "Filter by village or town anywhere in Botswana",
-                 "See what's in season and what it costs today",
-                 "Pay with a wallet, an FNB or ABSA transfer, a card or PayPal",
-                 "Payment details stored once in your profile",
-                 "Order history kept in your profile"]
+      farmer: ["One balance across wallets and banks",
+               "Sweeps between wallets and banks",
+               "Seasonal planting and pricing guidance",
+               "AI advisor for next season",
+               "Loan-readiness pack for banks",
+               "Advertise your stall"],
+      consumer: ["Browse produce stalls near you",
+                 "Filter by town or village",
+                 "See what's in season and what it costs",
+                 "Pay by wallet, bank, card or PayPal",
+                 "Payment details stored once",
+                 "Order history in your profile"]
     };
 
     function paint() {
@@ -153,12 +147,29 @@
         b.classList.toggle("sel", b.dataset.role === role));
       const list = role ? BLURB[role] : BLURB.farmer.slice(0, 3).concat(BLURB.consumer.slice(0, 3));
       document.getElementById("roleBlurb").innerHTML =
-        (role ? "" : `<p class="muted small">Choose farmer or shopper to see your side.</p>`) +
+        (role ? "" : `<p class="muted small">Choose a side.</p>`) +
         "<ul>" + list.map(i => `<li>${i}</li>`).join("") + "</ul>";
     }
 
+    function fillLocations() {
+      const c = document.getElementById("sCountry").value;
+      document.getElementById("sLocation").innerHTML =
+        BW.locationsFor(c).map(l => `<option>${l}</option>`).join("");
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
-      document.getElementById("sLocation").innerHTML = BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
+      const acc = currentAccount();
+      if (acc) {
+        document.getElementById("loginBox").innerHTML =
+          `<p class="small muted">Already signed up on this device.</p>
+           <a class="btn btn-primary btn-block" href="${acc.role === "farmer" ? "/farmer.html" : "/market.html"}">Log in as ${acc.name.split(" ")[0]}</a>
+           <hr style="margin:20px 0;border:0;border-top:1px solid var(--line)" />`;
+      }
+
+      document.getElementById("sCountry").innerHTML =
+        Object.keys(BW.COUNTRIES).map(c => `<option>${c}</option>`).join("");
+      document.getElementById("sCountry").addEventListener("change", fillLocations);
+      fillLocations();
       document.getElementById("sBank").innerHTML =
         `<option value="">No bank account</option>` + Object.values(BW.BANKS).map(b => `<option value="${b.id}">${b.name}</option>`).join("");
       document.getElementById("sPreferred").innerHTML = paymentOptions();
@@ -174,6 +185,7 @@
         const account = {
           role,
           name: val("sName"),
+          country: document.getElementById("sCountry").value,
           location: document.getElementById("sLocation").value,
           orange: val("sOrange"),
           smega: val("sSmega"),
@@ -186,13 +198,12 @@
         };
         store.set("account", account);
         store.set("profile", account);
-        toast("Welcome to AgriWise, " + account.name.split(" ")[0]);
-        setTimeout(() => {
-          location.href = role === "farmer" ? "/farmer.html" : "/market.html";
-        }, 600);
+        toast("Welcome, " + account.name.split(" ")[0]);
+        setTimeout(() => { location.href = "/index.html"; }, 600);
       });
     });
   })();
 </script>
+
 </body>
 </html>

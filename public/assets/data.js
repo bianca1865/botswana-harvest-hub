@@ -1,10 +1,16 @@
 /* Sample data for the AgriWise prototype (no backend). */
 
 window.BW = (function () {
-  const LOCATIONS = [
-    "Gaborone", "Mogoditshane", "Tlokweng", "Molepolole", "Kanye", "Lobatse",
-    "Francistown", "Serowe", "Palapye", "Maun", "Kasane", "Ghanzi", "Selebi-Phikwe", "Tonota"
-  ];
+  const COUNTRIES = {
+    "Botswana": ["Gaborone", "Mogoditshane", "Tlokweng", "Molepolole", "Kanye", "Lobatse",
+      "Francistown", "Serowe", "Palapye", "Maun", "Kasane", "Ghanzi", "Selebi-Phikwe", "Tonota"],
+    "South Africa": ["Johannesburg", "Pretoria", "Rustenburg", "Mahikeng", "Polokwane", "Cape Town", "Durban"],
+    "Namibia": ["Windhoek", "Gobabis", "Walvis Bay", "Oshakati", "Rundu"],
+    "Zimbabwe": ["Harare", "Bulawayo", "Gweru", "Mutare", "Plumtree"],
+    "Zambia": ["Lusaka", "Kitwe", "Livingstone", "Ndola"]
+  };
+  const LOCATIONS = COUNTRIES["Botswana"];
+  function locationsFor(country) { return COUNTRIES[country] || LOCATIONS; }
 
   /* Botswana growing calendar (simplified, prototype data) */
   const SEASONS = {
@@ -173,7 +179,7 @@ window.BW = (function () {
   ];
 
   return {
-    LOCATIONS, SEASONS, PRODUCE, STALLS, WALLETS, BANKS, GLOBAL, METHODS, methodsByType, TXNS,
+    COUNTRIES, LOCATIONS, locationsFor, SEASONS, PRODUCE, STALLS, WALLETS, BANKS, GLOBAL, METHODS, methodsByType, TXNS,
     seasonForMonth, currentSeason, nextSeason, produceFor
   };
 })();

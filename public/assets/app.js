@@ -85,6 +85,16 @@ function methodName(id) {
 /* ---------- accounts & roles (prototype, localStorage only) ---------- */
 function currentAccount() { return store.get("account", null); }
 
+function userCountry() { const a = currentAccount(); return (a && a.country) || "Botswana"; }
+function userLocations() { return BW.locationsFor(userCountry()); }
+function locationOptions() { return userLocations().map(l => `<option>${l}</option>`).join(""); }
+
+/* every page except signup requires an account */
+function requireAccount() {
+  if (!currentAccount()) { location.replace("/signup.html"); return false; }
+  return true;
+}
+
 function signOut() {
   store.set("account", null);
   location.href = "/index.html";

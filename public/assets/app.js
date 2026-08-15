@@ -1,0 +1,65 @@
+/* Shared helpers: formatting, storage, toasts, seasonal rendering. */
+
+const P = (n) => "P" + Number(n).toLocaleString("en-BW", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+const store = {
+  get(key, fallback) {
+    try { const v = localStorage.getItem("tfm:" + key); return v ? JSON.parse(v) : fallback; }
+    catch (e) { return fallback; }
+  },
+  set(key, value) {
+    try { localStorage.setItem("tfm:" + key, JSON.stringify(value)); } catch (e) {}
+  }
+};
+
+function toast(message) {
+  let el = document.querySelector(".toast");
+  if (!el) {
+    el = document.createElement("div");
+    el.className = "toast";
+    document.body.appendChild(el);
+  }
+  el.textContent = message;
+  requestAnimationFrame(() => el.classList.add("show"));
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove("show"), 3200);
+}
+
+function ref(prefix) {
+  const s = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return prefix + "-" + s;
+}
+
+function trendLabel(t) {
+  return t === "up" ? "▲ rising" : t === "down" ? "▼ easing" : "◆ steady";
+}
+
+function produceCard(p) {
+  return `
+    <article class="produce-card">
+      <div class="produce-emoji">${p.emoji}</div>
+      <h4>${p.name}</h4>
+      <div class="produce-price mono">${P(p.price)} <span class="muted small">/ ${p.unit}</span></div>
+      <div class="trend ${p.trend}">${trendLabel(p.trend)}</div>
+    </article>`;
+}
+
+function renderSeasonBlock(opts) {
+  const season = BW.currentSeason();
+  const list = BW.produceFor(season.key);
+  const nameEl = document.querySelector(opts.nameSel);
+  const monthsEl = document.querySelector(opts.monthsSel);
+  const noteEl = document.querySelector(opts.noteSel);
+  const gridEl = document.querySelector(opts.gridSel);
+  if (nameEl) nameEl.textContent = season.name;
+  if (monthsEl) monthsEl.textContent = season.months;
+  if (noteEl) noteEl.textContent = season.note;
+  if (gridEl) gridEl.innerHTML = list.map(produceCard).join("");
+  return season;
+}
+
+function setYear() {
+  document.querySelectorAll("[data-year]").forEach(el => { el.textContent = new Date().getFullYear(); });
+}
+
+document.addEventListener("DOMContentLoaded", setYear);

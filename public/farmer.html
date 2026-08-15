@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Farmer dashboard — wallets, seasons & AI advisor | Tsela</title>
+<meta name="description" content="Track Orange Money, Smega and MyZaka balances in one dashboard, sweep funds between wallets, see seasonal produce guidance, prepare for an ABSA loan and advertise your stall." />
+<meta property="og:title" content="Farmer dashboard — wallets, seasons & AI advisor | Tsela" />
+<meta property="og:description" content="One balance across Orange Money, Smega and MyZaka, seasonal planting guidance, an AI market advisor and loan readiness for Botswana farmers." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/home.html">Tsela <span>Farm Market</span></a>
+    <nav class="nav">
+      <a href="/home.html">Home</a>
+      <a href="/farmer.html" class="active">Farmer dashboard</a>
+      <a href="/market.html">Marketplace</a>
+      <a class="btn btn-primary btn-sm" href="#advertise">Advertise stall</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section style="padding-bottom:20px">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Farmer side</div>
+          <h1 style="font-size:clamp(2rem,4vw,3.1rem)">Dumela, Mmapula</h1>
+          <p class="muted" style="margin:0">Mmapula Fresh Produce · Gaborone · <span data-season-name>—</span></p>
+        </div>
+        <div class="stat" style="min-width:240px">
+          <div class="k">Total across all wallets</div>
+          <div class="v mono" id="totalBalance">P0.00</div>
+        </div>
+      </div>
+
+      <div class="grid-3" id="walletCards"></div>
+    </div>
+  </section>
+
+  <section style="padding-top:20px">
+    <div class="wrap dash-layout">
+      <div>
+        <!-- Cross-wallet transfer -->
+        <div class="card" id="transfer">
+          <div class="card-head">
+            <h3>Cross-wallet transfer</h3>
+            <span class="pill ochre">The missing tunnel</span>
+          </div>
+          <p class="muted small">Botswana wallets don't talk to each other. Tsela settles between them so a payment received on one wallet can land on another.</p>
+          <div class="route-line">
+            <span id="routeFrom">MyZaka</span>
+            <span class="arrow">⟶</span>
+            <span id="routeTo">Orange Money</span>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="fromWallet">From</label>
+              <select id="fromWallet"></select>
+            </div>
+            <div class="field">
+              <label for="toWallet">To</label>
+              <select id="toWallet"></select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="amount">Amount (BWP)</label>
+              <input id="amount" type="number" min="1" step="0.01" value="300" />
+            </div>
+            <div class="field">
+              <label for="destMsisdn">Destination number</label>
+              <input id="destMsisdn" type="tel" value="76 214 889" />
+            </div>
+          </div>
+          <p class="small muted" id="feeLine">Fee: —</p>
+          <button class="btn btn-primary btn-block" id="sendBtn">Send transfer</button>
+          <div id="transferResult"></div>
+        </div>
+
+        <!-- Seasonal produce -->
+        <div class="card">
+          <div class="card-head">
+            <h3>Thriving this season</h3>
+            <span class="pill" data-season-months>—</span>
+          </div>
+          <p class="muted small" data-season-note>—</p>
+          <div class="produce-grid" data-season-grid style="margin-top:16px"></div>
+        </div>
+
+        <!-- Advisor -->
+        <div class="card" id="advisor">
+          <div class="card-head">
+            <h3>AI market advisor</h3>
+            <span class="pill">Beta</span>
+          </div>
+          <div class="chat-shell">
+            <div class="chat-log" id="chatLog"></div>
+            <div class="chat-suggestions" id="chatChips"></div>
+            <form class="chat-input" id="chatForm">
+              <input id="chatInput" type="text" placeholder="Ask about next season, prices, demand or ABSA loans…" autocomplete="off" />
+              <button class="btn btn-primary" type="submit">Ask</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Advertise -->
+        <div class="card" id="advertise">
+          <div class="card-head">
+            <h3>Advertise your stall</h3>
+            <span class="pill ochre">Shows in the marketplace</span>
+          </div>
+          <form id="adForm">
+            <div class="field-row">
+              <div class="field">
+                <label for="adName">Stall name</label>
+                <input id="adName" required placeholder="Mmapula Fresh Produce" />
+              </div>
+              <div class="field">
+                <label for="adOwner">Your name</label>
+                <input id="adOwner" required placeholder="Mmapula Kgosi" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="adLocation">Town / village</label>
+                <select id="adLocation" required></select>
+              </div>
+              <div class="field">
+                <label for="adArea">Area or landmark</label>
+                <input id="adArea" placeholder="Block 8, near Riverwalk" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="adBlurb">About your produce</label>
+              <textarea id="adBlurb" rows="3" placeholder="What you grow, when you harvest, how you deliver."></textarea>
+            </div>
+            <div class="field">
+              <label for="adItems">Produce on sale (comma separated)</label>
+              <input id="adItems" placeholder="Tomatoes, Spinach, Green Maize" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="adOrange">Orange Money number</label>
+                <input id="adOrange" type="tel" placeholder="76 000 000" />
+              </div>
+              <div class="field">
+                <label for="adSmega">Smega number</label>
+                <input id="adSmega" type="tel" placeholder="71 000 000" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="adMyzaka">MyZaka number</label>
+              <input id="adMyzaka" type="tel" placeholder="74 000 000" />
+            </div>
+            <div class="field">
+              <label for="adImages">Photos of your stall &amp; produce</label>
+              <input id="adImages" type="file" accept="image/*" multiple />
+              <div class="upload-preview" id="adPreview"></div>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Publish listing</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <aside>
+        <div class="card">
+          <div class="card-head"><h3>Loan readiness</h3><span class="pill">ABSA</span></div>
+          <div class="stat" style="margin-bottom:14px">
+            <div class="k">Readiness score</div>
+            <div class="v mono"><span id="loanScore">0</span>/100</div>
+          </div>
+          <div class="meter"><span id="loanMeter" style="width:0%"></span></div>
+          <ul class="check-list" id="loanChecks"></ul>
+          <button class="btn btn-ghost btn-block" style="margin-top:16px" id="exportBtn">Export income statement</button>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Recent settlements</h3></div>
+          <div id="txnList"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>Season at a glance</h3></div>
+          <div class="stat" style="margin-bottom:12px">
+            <div class="k">Now</div>
+            <div class="v" style="font-size:1.15rem" data-season-name>—</div>
+          </div>
+          <div class="stat">
+            <div class="k">Coming next</div>
+            <div class="v" style="font-size:1.15rem" id="nextSeasonName">—</div>
+            <p class="small muted" style="margin:6px 0 0" id="nextSeasonNote"></p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="color:var(--cream)">Tsela <span>Farm Market</span></div>
+        <p class="small" style="opacity:.7;max-width:34ch">Wallet balances, transfers and payouts shown here are simulated for demonstration.</p>
+      </div>
+      <div><strong class="small">Farmers</strong><a href="/farmer.html#transfer">Transfers</a><a href="/farmer.html#advisor">AI advisor</a><a href="/farmer.html#advertise">Advertise</a></div>
+      <div><strong class="small">Shoppers</strong><a href="/market.html">Marketplace</a><a href="/market.html#profile">Profile</a></div>
+      <div><strong class="small">Wallets</strong><a href="/home.html#split">Orange Money</a><a href="/home.html#split">Smega</a><a href="/home.html#split">MyZaka</a></div>
+    </div>
+    <div class="footer-bottom">© <span data-year></span> Tsela Farm Market · Gaborone, Botswana · Prototype build</div>
+  </div>
+</footer>
+
+<script src="/assets/data.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/advisor.js"></script>
+<script src="/assets/farmer.js"></script>
+</body>
+</html>

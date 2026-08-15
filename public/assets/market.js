@@ -93,6 +93,17 @@ function methodGroupsHtml(s, selected) {
     </div>`).join("");
 }
 
+/* what the buyer's saved profile offers for a given method */
+function profileValueFor(id) {
+  const prof = store.get("profile", {});
+  if (!id) return "";
+  if (id.indexOf("bank:") === 0) return prof.account || "";
+  if (id === "global:paypal") return prof.paypal || "";
+  if (id === "global:visa" || id === "global:mastercard") return prof.card || "";
+  if (id === "global:swift") return prof.account || "";
+  return prof[id] || "";
+}
+
 function methodLabel(s, id) {
   const m = stallMethods(s).find(x => x.id === id);
   return m ? m : { name: id, detail: "" };
@@ -147,7 +158,7 @@ function openStall(id) {
       </div>
       <div class="field">
         <label for="buyMsisdn">Your mobile number</label>
-        <input id="buyMsisdn" type="tel" placeholder="76 000 000" value="${profile[selectedWallet] || ""}" />
+        <input id="buyMsisdn" type="tel" placeholder="76 000 000" value="${profileValueFor(selectedWallet)}" />
       </div>
       <p class="small muted" id="buyTotal"></p>
       <button class="btn btn-primary btn-block" id="payBtn">Pay now</button>
@@ -173,8 +184,7 @@ function openStall(id) {
   choice.querySelectorAll("button").forEach(b =>
     b.addEventListener("click", () => {
       selectedWallet = b.dataset.w;
-      const prof = store.get("profile", {});
-      if (prof[selectedWallet]) document.getElementById("buyMsisdn").value = prof[selectedWallet];
+      document.getElementById("buyMsisdn").value = profileValueFor(selectedWallet);
       paint();
     }));
   paint();

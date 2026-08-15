@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Marketplace — produce stalls near you in Botswana | Tsela</title>
+<meta name="description" content="Browse advertised produce stalls across Botswana, filter by town, see what's in season and pay with Orange Money, Smega or MyZaka." />
+<meta property="og:title" content="Marketplace — produce stalls near you in Botswana | Tsela" />
+<meta property="og:description" content="Seasonal produce stalls from Gaborone to Kasane, with Orange Money, Smega and MyZaka checkout." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/home.html">Tsela <span>Farm Market</span></a>
+    <nav class="nav">
+      <a href="/home.html">Home</a>
+      <a href="/farmer.html">Farmer dashboard</a>
+      <a href="/market.html" class="active">Marketplace</a>
+      <a class="btn btn-primary btn-sm" href="#profile">My profile</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section style="padding-bottom:24px">
+    <div class="wrap">
+      <div class="eyebrow">Consumer side</div>
+      <h1 style="font-size:clamp(2.2rem,5vw,3.6rem);max-width:16ch">Produce stalls near you, in season today.</h1>
+      <p class="muted" style="max-width:52ch">Every stall is run by a Botswana smallholder. Pick your town, see what they're harvesting, pay with the wallet you already use.</p>
+
+      <div class="card" style="margin-top:26px">
+        <div class="filters">
+          <div>
+            <label for="fLocation">Location</label>
+            <select id="fLocation"></select>
+          </div>
+          <div>
+            <label for="fProduce">Produce</label>
+            <select id="fProduce"></select>
+          </div>
+          <div>
+            <label for="fSearch">Search</label>
+            <input id="fSearch" type="search" placeholder="Stall or farmer name" />
+          </div>
+          <button class="btn btn-ghost" id="fReset" type="button">Reset</button>
+        </div>
+        <div class="chat-suggestions" id="seasonChips" style="margin-top:16px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="resultCount" style="margin:0">—</h2>
+        <span class="pill" data-season-name>—</span>
+      </div>
+      <div class="stall-grid" id="stallGrid"></div>
+      <p class="muted center" id="emptyState" style="display:none;padding:40px 0">No stalls match that yet. Try another town or clear the filters.</p>
+    </div>
+  </section>
+
+  <section class="band" id="profile">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Your profile</div>
+          <h2>Save your wallet details once</h2>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <form id="profileForm">
+            <div class="field-row">
+              <div class="field">
+                <label for="pName">Full name</label>
+                <input id="pName" placeholder="Naledi Motlhabane" />
+              </div>
+              <div class="field">
+                <label for="pLocation">Home location</label>
+                <select id="pLocation"></select>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="pOrange">Orange Money</label>
+                <input id="pOrange" type="tel" placeholder="76 000 000" />
+              </div>
+              <div class="field">
+                <label for="pSmega">Smega</label>
+                <input id="pSmega" type="tel" placeholder="71 000 000" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="pMyzaka">MyZaka</label>
+                <input id="pMyzaka" type="tel" placeholder="74 000 000" />
+              </div>
+              <div class="field">
+                <label for="pPreferred">Preferred wallet</label>
+                <select id="pPreferred">
+                  <option value="orange">Orange Money</option>
+                  <option value="smega">Smega</option>
+                  <option value="myzaka">MyZaka</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Save profile</button>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Order history</h3>
+          <div id="orderList"><p class="muted small">No orders yet. Your simulated purchases will appear here.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="color:var(--cream)">Tsela <span>Farm Market</span></div>
+        <p class="small" style="opacity:.7;max-width:34ch">Checkout on this prototype is simulated — no real money moves between wallets.</p>
+      </div>
+      <div><strong class="small">Shoppers</strong><a href="/market.html">Marketplace</a><a href="/market.html#profile">Profile</a></div>
+      <div><strong class="small">Farmers</strong><a href="/farmer.html">Dashboard</a><a href="/farmer.html#advertise">Advertise</a></div>
+      <div><strong class="small">Wallets</strong><a href="/home.html#split">Orange Money</a><a href="/home.html#split">Smega</a><a href="/home.html#split">MyZaka</a></div>
+    </div>
+    <div class="footer-bottom">© <span data-year></span> Tsela Farm Market · Gaborone, Botswana · Prototype build</div>
+  </div>
+</footer>
+
+<script src="/assets/data.js"></script>
+<script src="/assets/app.js"></script>
+<script src="/assets/market.js"></script>
+</body>
+</html>

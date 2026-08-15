@@ -74,7 +74,7 @@
       <div class="section-head">
         <div>
           <div class="eyebrow">Your profile</div>
-          <h2>Save your wallet details once</h2>
+          <h2>Save your payment details once</h2>
         </div>
       </div>
       <div class="grid-2">
@@ -106,13 +106,23 @@
                 <input id="pMyzaka" type="tel" placeholder="74 000 000" />
               </div>
               <div class="field">
-                <label for="pPreferred">Preferred wallet</label>
-                <select id="pPreferred">
-                  <option value="orange">Orange Money</option>
-                  <option value="smega">Smega</option>
-                  <option value="myzaka">MyZaka</option>
-                </select>
+                <label for="pBank">Bank</label>
+                <select id="pBank"></select>
               </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="pAccount">Bank account number</label>
+                <input id="pAccount" type="text" placeholder="1042 887 331" />
+              </div>
+              <div class="field">
+                <label for="pCard">Card number (Visa / Mastercard)</label>
+                <input id="pCard" type="text" placeholder="4111 1111 1111 1111" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="pPreferred">Preferred payment method</label>
+              <select id="pPreferred"></select>
             </div>
             <button class="btn btn-primary btn-block" type="submit">Save profile</button>
           </form>

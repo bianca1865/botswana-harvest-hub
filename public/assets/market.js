@@ -263,6 +263,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("fLocation").innerHTML =
     `<option value="all">All of Botswana</option>` + BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
   document.getElementById("pLocation").innerHTML = BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
+  document.getElementById("pBank").innerHTML =
+    `<option value="">No bank account</option>` + Object.values(BW.BANKS).map(b => `<option value="${b.id}">${b.name}</option>`).join("");
+  document.getElementById("pPreferred").innerHTML = paymentOptions();
   document.getElementById("fProduce").innerHTML =
     `<option value="all">Everything</option>` + BW.PRODUCE.map(p => `<option>${p.name}</option>`).join("");
 
@@ -304,6 +307,9 @@ document.addEventListener("DOMContentLoaded", function () {
       orange: document.getElementById("pOrange").value.trim(),
       smega: document.getElementById("pSmega").value.trim(),
       myzaka: document.getElementById("pMyzaka").value.trim(),
+      bank: document.getElementById("pBank").value,
+      account: document.getElementById("pAccount").value.trim(),
+      card: document.getElementById("pCard").value.trim(),
       preferred: document.getElementById("pPreferred").value
     });
     toast("Profile saved");

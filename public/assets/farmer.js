@@ -101,7 +101,7 @@ function renderLoan() {
   const income = txns.filter(t => t.dir === "in").reduce((a, b) => a + b.amount, 0);
   const listing = store.get("myStall", null);
   const checks = [
-    { label: "6 months of settled sales on Tsela", done: true },
+    { label: "6 months of settled sales on AgriWise", done: true },
     { label: "Income recorded on more than one wallet", done: true },
     { label: "Published stall listing (proof of trade)", done: !!listing },
     { label: "CIPA business registration uploaded", done: false },

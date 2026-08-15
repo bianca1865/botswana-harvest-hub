@@ -106,7 +106,7 @@ function openStall(id) {
       <p class="small muted" id="buyTotal"></p>
       <button class="btn btn-primary btn-block" id="payBtn">Pay now</button>
       <div id="payResult"></div>
-      <p class="notice" style="margin-top:16px">Simulated payment. In production Tsela settles between Orange Money, Smega and MyZaka so any buyer wallet can pay any farmer wallet.</p>
+      <p class="notice" style="margin-top:16px">Simulated payment. In production AgriWise settles between Orange Money, Smega and MyZaka so any buyer wallet can pay any farmer wallet.</p>
     </div>`;
 
   document.getElementById("modal").classList.add("open");

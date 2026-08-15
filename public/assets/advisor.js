@@ -13,7 +13,7 @@ function advisorAnswer(input) {
     return [
       "Loan readiness — ABSA smallholder / agri-business facility:",
       "",
-      "1. Income record: keep at least 6 consecutive months of settled sales on Tsela. Your current record is strong on Orange Money and Smega, thinner on MyZaka.",
+      "1. Income record: keep at least 6 consecutive months of settled sales on AgriWise. Your current record is strong on Orange Money and Smega, thinner on MyZaka.",
       "2. Bank statements: banks want 6–12 months. Sweep your wallet takings into one bank-linked wallet consistently rather than leaving cash spread across three.",
       "3. Registration: CIPA business registration plus an Omang copy, and a lease or tribal land board certificate for the plot.",
       "4. Cash-flow projection: use the seasonal price table on this dashboard — a 12-month projection tied to real season prices reads far better than a flat estimate.",
@@ -77,7 +77,7 @@ function advisorAnswer(input) {
 
   if (/hello|hi|dumela|help|what can you/.test(q)) {
     return [
-      "Dumela! I'm your Tsela market advisor. I can help with:",
+      "Dumela! I'm your AgriWise market advisor. I can help with:",
       "• What will thrive next season and when to start seedlings",
       "• Current and forecast pricing per crop",
       "• Where the demand is and who to sell to",

@@ -195,6 +195,7 @@ function publishListing(e) {
 
 /* ---------- boot ---------- */
 document.addEventListener("DOMContentLoaded", function () {
+  if (!requireRole("farmer")) return;
   const season = renderSeasonBlock({
     nameSel: "[data-season-name]",
     monthsSel: "[data-season-months]",

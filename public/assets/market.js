@@ -223,6 +223,7 @@ function loadProfile() {
 
 /* ---------- boot ---------- */
 document.addEventListener("DOMContentLoaded", function () {
+  if (!requireRole("consumer")) return;
   const season = BW.currentSeason();
   document.querySelectorAll("[data-season-name]").forEach(el => el.textContent = "In season: " + season.name);
 

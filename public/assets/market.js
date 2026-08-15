@@ -10,7 +10,7 @@ function allStalls() {
 
 function priceOf(name) {
   const p = BW.PRODUCE.find(x => x.name === name);
-  return p || { name, emoji: "🧺", price: 15, unit: "kg", trend: "flat" };
+  return p || { name, unit: "kg", price: 15, trend: "flat" };
 }
 
 function matches(stall) {
@@ -44,7 +44,7 @@ function renderStalls() {
         <div class="tags">
           ${s.items.slice(0, 4).map(i => `<span class="pill ${inSeason.includes(i) ? "" : "line"}">${i}</span>`).join("")}
         </div>
-        <div class="wallet-dots">${walletDots(s.wallets)} <span class="small muted">accepted here</span></div>
+        <div class="wallet-dots">${walletDots(s.wallets)} <span class="small muted">wallets, ${s.bank && BW.BANKS[s.bank.id] ? BW.BANKS[s.bank.id].short : "bank"} transfer &amp; cards</span></div>
       </div>
     </article>`).join("");
 
@@ -57,21 +57,68 @@ function renderStalls() {
     card.addEventListener("click", () => openStall(card.dataset.id)));
 }
 
-function stallEmoji(s) {
-  const first = (s.items || []).map(priceOf).find(p => p.emoji);
-  return first ? first.emoji : "🧺";
+function stallMonogram(s) {
+  return (s.name || "?").trim().charAt(0).toUpperCase();
+}
+
+/* every payment rail this stall can be paid on */
+function stallMethods(s) {
+  const list = [];
+  ["orange", "smega", "myzaka"].forEach(k => {
+    if (s.wallets && s.wallets[k]) list.push({ id: k, name: BW.WALLETS[k].name, detail: "+267 " + s.wallets[k], group: "Mobile wallets" });
+  });
+  if (s.bank && BW.BANKS[s.bank.id]) {
+    list.push({ id: "bank:" + s.bank.id, name: BW.BANKS[s.bank.id].name, detail: "Acc " + s.bank.account, group: "Bank transfer" });
+  }
+  Object.values(BW.BANKS).forEach(b => {
+    if (!s.bank || b.id !== s.bank.id) list.push({ id: "bank:" + b.id, name: b.name, detail: "Interbank settlement", group: "Bank transfer" });
+  });
+  Object.values(BW.GLOBAL).forEach(g =>
+    list.push({ id: "global:" + g.id, name: g.name, detail: "Settled to the farmer in Pula", group: "Global payments" }));
+  return list;
+}
+
+function methodGroupsHtml(s, selected) {
+  const list = stallMethods(s);
+  const groups = ["Mobile wallets", "Bank transfer", "Global payments"];
+  return groups.map(g => `
+    <div class="method-group">
+      <div class="method-group-title">${g}</div>
+      <div class="wallet-choice">
+        ${list.filter(m => m.group === g).map(m => `
+          <button type="button" data-w="${m.id}" class="${m.id === selected ? "sel" : ""}">
+            ${m.name}<br /><span class="small muted">${m.detail}</span>
+          </button>`).join("")}
+      </div>
+    </div>`).join("");
+}
+
+/* what the buyer's saved profile offers for a given method */
+function profileValueFor(id) {
+  const prof = store.get("profile", {});
+  if (!id) return "";
+  if (id.indexOf("bank:") === 0) return prof.account || "";
+  if (id === "global:paypal") return prof.paypal || "";
+  if (id === "global:visa" || id === "global:mastercard") return prof.card || "";
+  if (id === "global:swift") return prof.account || "";
+  return prof[id] || "";
+}
+
+function methodLabel(s, id) {
+  const m = stallMethods(s).find(x => x.id === id);
+  return m ? m : { name: id, detail: "" };
 }
 
 function thumbFor(s) {
   return s.img
     ? `<img src="${s.img}" alt="${s.name} produce stall in ${s.location}" loading="lazy" />`
-    : `<div class="media-placeholder"><span class="ph-emoji">${stallEmoji(s)}</span></div>`;
+    : `<div class="media-placeholder"><span class="ph-mono">${stallMonogram(s)}</span></div>`;
 }
 
 function coverFor(s) {
   return s.img
     ? `<img class="cover" src="${s.img}" alt="${s.name}" />`
-    : `<div class="media-placeholder cover"><span class="ph-emoji">${stallEmoji(s)}</span></div>`;
+    : `<div class="media-placeholder cover"><span class="ph-mono">${stallMonogram(s)}</span></div>`;
 }
 
 /* ---------- stall modal + simulated checkout ---------- */
@@ -80,8 +127,8 @@ function openStall(id) {
   if (!s) return;
   activeStall = s;
   const profile = store.get("profile", {});
-  selectedWallet = ["orange", "smega", "myzaka"].find(k => s.wallets[k] && profile[k]) ||
-                   ["orange", "smega", "myzaka"].find(k => s.wallets[k]);
+  const available = stallMethods(s).map(m => m.id);
+  selectedWallet = (profile.preferred && available.indexOf(profile.preferred) > -1) ? profile.preferred : available[0];
 
   document.getElementById("modalContent").innerHTML = `
     ${coverFor(s)}
@@ -97,15 +144,8 @@ function openStall(id) {
       </div>
 
       <h3 style="margin-top:26px">Pay this stall</h3>
-      <div class="field">
-        <label>Choose a wallet</label>
-        <div class="wallet-choice" id="walletChoice">
-          ${["orange", "smega", "myzaka"].map(k => `
-            <button type="button" data-w="${k}" ${s.wallets[k] ? "" : "disabled style='opacity:.4;cursor:not-allowed'"}>
-              ${BW.WALLETS[k].name}<br /><span class="small muted">${s.wallets[k] ? "+267 " + s.wallets[k] : "not accepted"}</span>
-            </button>`).join("")}
-        </div>
-      </div>
+      <p class="small muted">Mobile wallets, Botswana banks (FNB, ABSA, Stanbic, Standard Chartered) and global cards or PayPal all settle to the farmer.</p>
+      <div id="walletChoice">${methodGroupsHtml(s, selectedWallet)}</div>
       <div class="field-row">
         <div class="field">
           <label for="buyItem">Produce</label>
@@ -117,13 +157,13 @@ function openStall(id) {
         </div>
       </div>
       <div class="field">
-        <label for="buyMsisdn">Your mobile number</label>
-        <input id="buyMsisdn" type="tel" placeholder="76 000 000" value="${profile[selectedWallet] || ""}" />
+        <label for="buyMsisdn">Your number, account or card</label>
+        <input id="buyMsisdn" type="text" placeholder="76 000 000 / 1042 887 331" value="${profileValueFor(selectedWallet)}" />
       </div>
       <p class="small muted" id="buyTotal"></p>
       <button class="btn btn-primary btn-block" id="payBtn">Pay now</button>
       <div id="payResult"></div>
-      <p class="notice" style="margin-top:16px">Simulated payment. In production AgriWise settles between Orange Money, Smega and MyZaka so any buyer wallet can pay any farmer wallet.</p>
+      <p class="notice" style="margin-top:16px">Simulated payment. In production AgriWise settles between Orange Money, Smega, MyZaka, Botswana banks such as FNB and ABSA, and global card or online methods, so any buyer method can pay any farmer account.</p>
     </div>`;
 
   document.getElementById("modal").classList.add("open");
@@ -141,11 +181,10 @@ function openStall(id) {
   const choice = document.getElementById("walletChoice");
   const paint = () => choice.querySelectorAll("button").forEach(b =>
     b.classList.toggle("sel", b.dataset.w === selectedWallet));
-  choice.querySelectorAll("button:not([disabled])").forEach(b =>
+  choice.querySelectorAll("button").forEach(b =>
     b.addEventListener("click", () => {
       selectedWallet = b.dataset.w;
-      const prof = store.get("profile", {});
-      if (prof[selectedWallet]) document.getElementById("buyMsisdn").value = prof[selectedWallet];
+      document.getElementById("buyMsisdn").value = profileValueFor(selectedWallet);
       paint();
     }));
   paint();
@@ -158,12 +197,13 @@ function pay() {
   const item = priceOf(document.getElementById("buyItem").value);
   const qty = parseInt(document.getElementById("buyQty").value, 10) || 0;
   const msisdn = document.getElementById("buyMsisdn").value.trim();
-  if (!selectedWallet) { toast("Choose a wallet"); return; }
+  if (!selectedWallet) { toast("Choose a payment method"); return; }
   if (qty <= 0) { toast("Enter a quantity"); return; }
-  if (!msisdn) { toast("Enter your mobile number"); return; }
+  if (!msisdn) { toast("Enter your number or account"); return; }
 
   const total = item.price * qty;
-  const reference = ref("TFM");
+  const reference = ref("AGW");
+  const method = methodLabel(s, selectedWallet);
   const btn = document.getElementById("payBtn");
   btn.textContent = "Waiting for your PIN prompt…";
   btn.disabled = true;
@@ -177,15 +217,15 @@ function pay() {
         <div class="row"><span>Reference</span><span class="mono">${reference}</span></div>
         <div class="row"><span>Stall</span><span>${s.name}</span></div>
         <div class="row"><span>Order</span><span>${qty} × ${item.unit} ${item.name}</span></div>
-        <div class="row"><span>Paid from</span><span>${BW.WALLETS[selectedWallet].name} · +267 ${msisdn}</span></div>
-        <div class="row"><span>Settled to</span><span>+267 ${s.wallets[selectedWallet]}</span></div>
+        <div class="row"><span>Paid with</span><span>${method.name} · ${msisdn}</span></div>
+        <div class="row"><span>Settled to</span><span>${s.name} · ${method.detail}</span></div>
         <div class="row"><strong>Total</strong><strong class="mono">${P(total)}</strong></div>
       </div>`;
 
     const orders = store.get("orders", []);
     orders.unshift({
       ref: reference, stall: s.name, item: item.name, qty,
-      total, wallet: BW.WALLETS[selectedWallet].name, when: new Date().toLocaleString("en-GB")
+      total, wallet: method.name, when: new Date().toLocaleString("en-GB")
     });
     store.set("orders", orders);
     renderOrders();
@@ -218,6 +258,9 @@ function loadProfile() {
   ["orange", "smega", "myzaka"].forEach(k => {
     if (p[k]) document.getElementById("p" + k.charAt(0).toUpperCase() + k.slice(1)).value = p[k];
   });
+  if (p.bank) document.getElementById("pBank").value = p.bank;
+  if (p.account) document.getElementById("pAccount").value = p.account;
+  if (p.card) document.getElementById("pCard").value = p.card;
   if (p.preferred) document.getElementById("pPreferred").value = p.preferred;
 }
 
@@ -230,14 +273,17 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("fLocation").innerHTML =
     `<option value="all">All of Botswana</option>` + BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
   document.getElementById("pLocation").innerHTML = BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
+  document.getElementById("pBank").innerHTML =
+    `<option value="">No bank account</option>` + Object.values(BW.BANKS).map(b => `<option value="${b.id}">${b.name}</option>`).join("");
+  document.getElementById("pPreferred").innerHTML = paymentOptions();
   document.getElementById("fProduce").innerHTML =
     `<option value="all">Everything</option>` + BW.PRODUCE.map(p => `<option>${p.name}</option>`).join("");
 
   document.getElementById("seasonChips").innerHTML =
-    BW.produceFor(season.key).slice(0, 8).map(p => `<button class="chip" type="button">${p.emoji} ${p.name}</button>`).join("");
+    BW.produceFor(season.key).slice(0, 8).map(p => `<button class="chip" type="button">${p.name}</button>`).join("");
   document.querySelectorAll("#seasonChips .chip").forEach(chip =>
     chip.addEventListener("click", () => {
-      const name = chip.textContent.trim().split(" ").slice(1).join(" ");
+      const name = chip.textContent.trim();
       filters.produce = filters.produce === name ? "all" : name;
       document.getElementById("fProduce").value = filters.produce;
       document.querySelectorAll("#seasonChips .chip").forEach(c => c.classList.remove("active"));
@@ -271,6 +317,9 @@ document.addEventListener("DOMContentLoaded", function () {
       orange: document.getElementById("pOrange").value.trim(),
       smega: document.getElementById("pSmega").value.trim(),
       myzaka: document.getElementById("pMyzaka").value.trim(),
+      bank: document.getElementById("pBank").value,
+      account: document.getElementById("pAccount").value.trim(),
+      card: document.getElementById("pCard").value.trim(),
       preferred: document.getElementById("pPreferred").value
     });
     toast("Profile saved");

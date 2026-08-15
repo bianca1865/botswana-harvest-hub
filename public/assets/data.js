@@ -55,22 +55,22 @@ window.BW = (function () {
 
   /* price = BWP per kg (or per unit where noted) */
   const PRODUCE = [
-    { name: "Tomatoes",      emoji: "🍅", unit: "kg",     price: 18.50, trend: "up",   seasons: ["hot-wet", "post-rain"] },
-    { name: "Morogo (Wild Spinach)", emoji: "🌿", unit: "bunch", price: 8.00, trend: "up", seasons: ["hot-wet", "post-rain"] },
-    { name: "Green Maize",   emoji: "🌽", unit: "cob",    price: 6.00,  trend: "flat", seasons: ["hot-wet", "post-rain"] },
-    { name: "Watermelon",    emoji: "🍉", unit: "each",   price: 35.00, trend: "down", seasons: ["hot-wet"] },
-    { name: "Green Beans",   emoji: "🫘", unit: "kg",     price: 26.00, trend: "up",   seasons: ["hot-wet", "post-rain"] },
-    { name: "Butternut",     emoji: "🎃", unit: "kg",     price: 12.00, trend: "flat", seasons: ["post-rain", "cool-dry"] },
-    { name: "Cabbage",       emoji: "🥬", unit: "head",   price: 22.00, trend: "up",   seasons: ["cool-dry", "post-rain"] },
-    { name: "Spinach",       emoji: "🥬", unit: "bunch",  price: 10.00, trend: "flat", seasons: ["cool-dry", "post-rain", "hot-dry"] },
-    { name: "Beetroot",      emoji: "🫜", unit: "kg",     price: 16.00, trend: "up",   seasons: ["cool-dry"] },
-    { name: "Carrots",       emoji: "🥕", unit: "kg",     price: 15.00, trend: "flat", seasons: ["cool-dry"] },
-    { name: "Onions",        emoji: "🧅", unit: "kg",     price: 14.00, trend: "up",   seasons: ["cool-dry", "hot-dry"] },
-    { name: "Rape (Leafy)",  emoji: "🌱", unit: "bunch",  price: 9.00,  trend: "flat", seasons: ["cool-dry", "hot-dry"] },
-    { name: "Green Pepper",  emoji: "🫑", unit: "kg",     price: 28.00, trend: "up",   seasons: ["hot-dry", "hot-wet"] },
-    { name: "Chillies",      emoji: "🌶️", unit: "kg",    price: 42.00, trend: "up",   seasons: ["hot-dry", "hot-wet"] },
-    { name: "Sweet Potato",  emoji: "🍠", unit: "kg",     price: 17.00, trend: "flat", seasons: ["hot-dry", "post-rain"] },
-    { name: "Groundnuts",    emoji: "🥜", unit: "kg",     price: 38.00, trend: "up",   seasons: ["post-rain", "cool-dry"] }
+    { name: "Tomatoes",      unit: "kg",     price: 18.50, trend: "up",   seasons: ["hot-wet", "post-rain"] },
+    { name: "Morogo (Wild Spinach)", unit: "bunch", price: 8.00, trend: "up", seasons: ["hot-wet", "post-rain"] },
+    { name: "Green Maize",   unit: "cob",    price: 6.00,  trend: "flat", seasons: ["hot-wet", "post-rain"] },
+    { name: "Watermelon",    unit: "each",   price: 35.00, trend: "down", seasons: ["hot-wet"] },
+    { name: "Green Beans",   unit: "kg",     price: 26.00, trend: "up",   seasons: ["hot-wet", "post-rain"] },
+    { name: "Butternut",     unit: "kg",     price: 12.00, trend: "flat", seasons: ["post-rain", "cool-dry"] },
+    { name: "Cabbage",       unit: "head",   price: 22.00, trend: "up",   seasons: ["cool-dry", "post-rain"] },
+    { name: "Spinach",       unit: "bunch",  price: 10.00, trend: "flat", seasons: ["cool-dry", "post-rain", "hot-dry"] },
+    { name: "Beetroot",      unit: "kg",     price: 16.00, trend: "up",   seasons: ["cool-dry"] },
+    { name: "Carrots",       unit: "kg",     price: 15.00, trend: "flat", seasons: ["cool-dry"] },
+    { name: "Onions",        unit: "kg",     price: 14.00, trend: "up",   seasons: ["cool-dry", "hot-dry"] },
+    { name: "Rape (Leafy)",  unit: "bunch",  price: 9.00,  trend: "flat", seasons: ["cool-dry", "hot-dry"] },
+    { name: "Green Pepper",  unit: "kg",     price: 28.00, trend: "up",   seasons: ["hot-dry", "hot-wet"] },
+    { name: "Chillies",      unit: "kg",    price: 42.00, trend: "up",   seasons: ["hot-dry", "hot-wet"] },
+    { name: "Sweet Potato",  unit: "kg",     price: 17.00, trend: "flat", seasons: ["hot-dry", "post-rain"] },
+    { name: "Groundnuts",    unit: "kg",     price: 38.00, trend: "up",   seasons: ["post-rain", "cool-dry"] }
   ];
 
   function produceFor(seasonKey) {
@@ -83,9 +83,33 @@ window.BW = (function () {
     myzaka: { id: "myzaka", name: "MyZaka",       cls: "myzaka", fee: 0.011 }
   };
 
+
+  /* Banks and global card / online methods — settlement rails alongside the wallets */
+  const BANKS = {
+    fnb:      { id: "fnb",      name: "FNB Botswana",       short: "FNB",    type: "bank", fee: 0.008 },
+    absa:     { id: "absa",     name: "ABSA Botswana",      short: "ABSA",   type: "bank", fee: 0.008 },
+    stanbic:  { id: "stanbic",  name: "Stanbic Bank",       short: "Stanbic",type: "bank", fee: 0.009 },
+    stanchart:{ id: "stanchart",name: "Standard Chartered", short: "StanChart", type: "bank", fee: 0.009 }
+  };
+
+  const GLOBAL = {
+    visa:       { id: "visa",       name: "Visa",             type: "card",   fee: 0.024 },
+    mastercard: { id: "mastercard", name: "Mastercard",       type: "card",   fee: 0.024 },
+    paypal:     { id: "paypal",     name: "PayPal",           type: "online", fee: 0.034 },
+    swift:      { id: "swift",      name: "SWIFT bank wire",  type: "online", fee: 0.015 }
+  };
+
+  const METHODS = Object.assign({}, WALLETS, BANKS, GLOBAL);
+  Object.keys(WALLETS).forEach(k => { METHODS[k].type = "wallet"; });
+
+  function methodsByType(type) {
+    return Object.values(METHODS).filter(m => m.type === type);
+  }
+
   const STALLS = [
     {
-      id: "s1", name: "Mmapula Fresh Produce", owner: "Mmapula Kgosi",
+      id: "s1",
+      bank: { id: "absa", account: "1042 887 331" }, cards: true, name: "Mmapula Fresh Produce", owner: "Mmapula Kgosi",
       location: "Gaborone", area: "Block 8, near Riverwalk",
       blurb: "Family plot in Notwane growing tomatoes, morogo and green maize. Fresh cut every morning at 05:00.",
       items: ["Tomatoes", "Morogo (Wild Spinach)", "Green Maize", "Spinach"],
@@ -93,7 +117,8 @@ window.BW = (function () {
       rating: 4.8, delivery: "Free delivery within 10 km"
     },
     {
-      id: "s2", name: "Tlokweng Green Gardens", owner: "Kabelo Seretse",
+      id: "s2",
+      bank: { id: "fnb", account: "6255 019 447" }, cards: true, name: "Tlokweng Green Gardens", owner: "Kabelo Seretse",
       location: "Tlokweng", area: "Plot 4412, Tlokweng Road",
       blurb: "Drip-irrigated market garden. Cabbage, rape and beetroot all winter, chillies through the dry season.",
       items: ["Cabbage", "Rape (Leafy)", "Beetroot", "Chillies"],
@@ -101,7 +126,8 @@ window.BW = (function () {
       rating: 4.6, delivery: "Collect at stall or Gaborone drop-off Fridays"
     },
     {
-      id: "s3", name: "Serowe Root Co-op", owner: "Neo Baitshepi",
+      id: "s3",
+      bank: { id: "fnb", account: "6299 774 100" }, cards: true, name: "Serowe Root Co-op", owner: "Neo Baitshepi",
       location: "Serowe", area: "Main Kgotla road",
       blurb: "Eight-farmer co-operative supplying butternut, sweet potato and carrots in bulk crates.",
       items: ["Butternut", "Sweet Potato", "Carrots", "Onions"],
@@ -109,7 +135,8 @@ window.BW = (function () {
       rating: 4.9, delivery: "Bulk crates, transport arranged to Palapye & Gaborone"
     },
     {
-      id: "s4", name: "Maun Riverside Veg", owner: "Onalenna Dintwe",
+      id: "s4",
+      bank: { id: "stanbic", account: "9033 118 205" }, cards: true, name: "Maun Riverside Veg", owner: "Onalenna Dintwe",
       location: "Maun", area: "Boseja ward, riverside plots",
       blurb: "Thamalakane river plots. Green beans, peppers and salad greens for lodges and households.",
       items: ["Green Beans", "Green Pepper", "Spinach", "Tomatoes"],
@@ -117,7 +144,8 @@ window.BW = (function () {
       rating: 4.7, delivery: "Lodge deliveries Tue & Sat"
     },
     {
-      id: "s5", name: "Kanye Hillside Farm", owner: "Tebogo Molefe",
+      id: "s5",
+      bank: { id: "absa", account: "1078 442 916" }, cards: true, name: "Kanye Hillside Farm", owner: "Tebogo Molefe",
       location: "Kanye", area: "Ntsweng, off the A2",
       blurb: "Winter brassicas and groundnuts, plus watermelon over the rains. Sells by crate or by kilo.",
       items: ["Cabbage", "Groundnuts", "Watermelon", "Carrots"],
@@ -125,7 +153,8 @@ window.BW = (function () {
       rating: 4.4, delivery: "Collection only"
     },
     {
-      id: "s6", name: "Francistown Urban Greens", owner: "Lesego Phiri",
+      id: "s6",
+      bank: { id: "stanchart", account: "2011 663 084" }, cards: true, name: "Francistown Urban Greens", owner: "Lesego Phiri",
       location: "Francistown", area: "Tati River industrial edge",
       blurb: "Shade-net tunnels producing leafy greens year round, even through the hot dry months.",
       items: ["Spinach", "Rape (Leafy)", "Green Pepper", "Onions"],
@@ -144,7 +173,7 @@ window.BW = (function () {
   ];
 
   return {
-    LOCATIONS, SEASONS, PRODUCE, STALLS, WALLETS, TXNS,
+    LOCATIONS, SEASONS, PRODUCE, STALLS, WALLETS, BANKS, GLOBAL, METHODS, methodsByType, TXNS,
     seasonForMonth, currentSeason, nextSeason, produceFor
   };
 })();

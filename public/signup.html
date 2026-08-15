@@ -40,8 +40,8 @@
             <div class="field">
               <label>I am a…</label>
               <div class="wallet-choice" id="roleChoice">
-                <button type="button" data-role="farmer">🌾 Farmer<br /><span class="small muted">Sell produce, track wallets</span></button>
-                <button type="button" data-role="consumer">🧺 Shopper<br /><span class="small muted">Buy from stalls near me</span></button>
+                <button type="button" data-role="farmer">Farmer<br /><span class="small muted">Sell produce, track payments</span></button>
+                <button type="button" data-role="consumer">Shopper<br /><span class="small muted">Buy from stalls near me</span></button>
               </div>
             </div>
             <div class="field-row">
@@ -70,12 +70,28 @@
                 <input id="sMyzaka" type="tel" placeholder="74 000 000" />
               </div>
               <div class="field">
-                <label for="sPreferred">Preferred wallet</label>
-                <select id="sPreferred">
-                  <option value="orange">Orange Money</option>
-                  <option value="smega">Smega</option>
-                  <option value="myzaka">MyZaka</option>
-                </select>
+                <label for="sBank">Bank</label>
+                <select id="sBank"></select>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="sAccount">Bank account number</label>
+                <input id="sAccount" type="text" placeholder="1042 887 331" />
+              </div>
+              <div class="field">
+                <label for="sCard">Card number (Visa / Mastercard)</label>
+                <input id="sCard" type="text" placeholder="4111 1111 1111 1111" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="sPaypal">PayPal email</label>
+                <input id="sPaypal" type="email" placeholder="you@example.com" />
+              </div>
+              <div class="field">
+                <label for="sPreferred">Preferred payment method</label>
+                <select id="sPreferred"></select>
               </div>
             </div>
             <button class="btn btn-primary btn-block" type="submit">Create account</button>
@@ -106,8 +122,8 @@
     let role = params.get("role") === "consumer" ? "consumer" : params.get("role") === "farmer" ? "farmer" : null;
 
     const BLURB = {
-      farmer: ["One balance across Orange Money, Smega and MyZaka",
-               "Cross-wallet sweeps with transparent fees",
+      farmer: ["One balance across wallets and your FNB or ABSA account",
+               "Sweeps between wallets and banks with transparent fees",
                "Season-aware planting and pricing guidance",
                "AI advisor for next season's demand",
                "Loan-readiness pack for ABSA and other banks",
@@ -115,8 +131,8 @@
       consumer: ["Browse advertised produce stalls like a marketplace",
                  "Filter by village or town anywhere in Botswana",
                  "See what's in season and what it costs today",
-                 "Pay with the wallet you already use",
-                 "Wallet details stored once in your profile",
+                 "Pay with a wallet, an FNB or ABSA transfer, a card or PayPal",
+                 "Payment details stored once in your profile",
                  "Order history kept in your profile"]
     };
 
@@ -131,6 +147,9 @@
 
     document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("sLocation").innerHTML = BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
+      document.getElementById("sBank").innerHTML =
+        `<option value="">No bank account</option>` + Object.values(BW.BANKS).map(b => `<option value="${b.id}">${b.name}</option>`).join("");
+      document.getElementById("sPreferred").innerHTML = paymentOptions();
       document.querySelectorAll("#roleChoice button").forEach(b =>
         b.addEventListener("click", () => { role = b.dataset.role; paint(); }));
       paint();
@@ -147,6 +166,10 @@
           orange: val("sOrange"),
           smega: val("sSmega"),
           myzaka: val("sMyzaka"),
+          bank: document.getElementById("sBank").value,
+          account: val("sAccount"),
+          card: val("sCard"),
+          paypal: val("sPaypal"),
           preferred: document.getElementById("sPreferred").value
         };
         store.set("account", account);

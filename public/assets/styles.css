@@ -163,7 +163,6 @@ section { padding: 56px 0; }
   padding: 16px; transition: .18s ease;
 }
 .produce-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-.produce-emoji { font-size: 1.8rem; line-height: 1; }
 .produce-card h4 { font-family: var(--serif); font-size: 1.05rem; margin: 10px 0 4px; }
 .produce-price { font-weight: 700; font-size: .92rem; }
 .trend { font-size: .78rem; font-weight: 700; }
@@ -350,7 +349,24 @@ input:focus, select:focus, textarea:focus { border-color: var(--green-600); box-
     var(--cream-2);
   color: var(--ink); opacity: .85; text-align: center;
 }
-.media-placeholder .ph-emoji { font-size: 2.4rem; line-height: 1; }
+.media-placeholder .ph-mono {
+  font-family: "Fraunces", Georgia, serif; font-size: 2.6rem; font-weight: 600;
+  width: 74px; height: 74px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(0,0,0,.05);
+}
 .hero-media-empty { aspect-ratio: 8/5.4; }
 .modal .media-placeholder.cover { aspect-ratio: 16/8; }
 .nav-account { font-weight: 700; }
+
+/* ---- payment method groups ---- */
+.method-group { margin-top: 14px; }
+.method-group-title {
+  font-size: .74rem; letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 700; opacity: .65; margin-bottom: 8px;
+}
+.wallet-card.bank { background: var(--ink); color: var(--cream); }
+.produce-mono {
+  width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center;
+  font-family: "Fraunces", Georgia, serif; font-weight: 600; font-size: 1.2rem;
+  background: rgba(0,0,0,.06); margin-bottom: 8px;
+}

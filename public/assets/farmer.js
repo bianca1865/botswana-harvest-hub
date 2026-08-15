@@ -1,29 +1,51 @@
 /* Farmer dashboard behaviour (prototype, all client-side). */
 
-const DEFAULT_BALANCES = { orange: 4820.5, smega: 2140.0, myzaka: 1265.75 };
+const DEFAULT_BALANCES = {
+  orange: 4820.5, smega: 2140.0, myzaka: 1265.75,
+  "bank:fnb": 7310.4, "bank:absa": 5185.9
+};
 const MSISDN = { orange: "76 214 889", smega: "71 903 447", myzaka: "74 118 902" };
+const BANK_ACCOUNTS = { "bank:fnb": "6255 019 447", "bank:absa": "1042 887 331" };
 
-let balances = store.get("balances", DEFAULT_BALANCES);
+/* every account money can sit in or move between */
+function accountList() {
+  const wallets = Object.values(BW.WALLETS).map(w => ({
+    id: w.id, name: w.name, cls: w.cls, fee: w.fee, kind: "Mobile wallet", ref: "+267 " + MSISDN[w.id]
+  }));
+  const banks = Object.keys(BANK_ACCOUNTS).map(id => {
+    const b = BW.BANKS[id.split(":")[1]];
+    return { id: id, name: b.name, cls: "bank", fee: b.fee, kind: "Bank account", ref: "Acc " + BANK_ACCOUNTS[id] };
+  });
+  return wallets.concat(banks);
+}
+
+function accountById(id) { return accountList().find(a => a.id === id); }
+
+let balances = Object.assign({}, DEFAULT_BALANCES, store.get("balances", {}));
 let txns = store.get("txns", BW.TXNS);
 let uploaded = [];
 
 /* ---------- wallets ---------- */
 function renderWallets() {
-  const el = document.getElementById("walletCards");
-  el.innerHTML = Object.values(BW.WALLETS).map(w => `
-    <div class="wallet-card ${w.cls}">
-      <div class="w-name">${w.name}</div>
-      <div class="w-bal mono">${P(balances[w.id])}</div>
-      <div class="w-msisdn">+267 ${MSISDN[w.id]}</div>
-    </div>`).join("");
+  const accounts = accountList();
+  const card = a => `
+    <div class="wallet-card ${a.cls}">
+      <div class="w-name">${a.name}</div>
+      <div class="w-bal mono">${P(balances[a.id] || 0)}</div>
+      <div class="w-msisdn">${a.kind} · ${a.ref}</div>
+    </div>`;
+  document.getElementById("walletCards").innerHTML =
+    accounts.filter(a => a.kind === "Mobile wallet").map(card).join("");
+  const bankEl = document.getElementById("bankCards");
+  if (bankEl) bankEl.innerHTML = accounts.filter(a => a.kind === "Bank account").map(card).join("");
 
-  const total = Object.values(balances).reduce((a, b) => a + b, 0);
+  const total = accountList().reduce((sum, a) => sum + (balances[a.id] || 0), 0);
   document.getElementById("totalBalance").textContent = P(total);
 }
 
 /* ---------- transfers ---------- */
 function fillWalletSelects() {
-  const opts = Object.values(BW.WALLETS).map(w => `<option value="${w.id}">${w.name}</option>`).join("");
+  const opts = accountList().map(a => `<option value="${a.id}">${a.name}</option>`).join("");
   const from = document.getElementById("fromWallet");
   const to = document.getElementById("toWallet");
   from.innerHTML = opts; to.innerHTML = opts;
@@ -31,11 +53,11 @@ function fillWalletSelects() {
 }
 
 function syncRoute() {
-  const from = BW.WALLETS[document.getElementById("fromWallet").value];
-  const to = BW.WALLETS[document.getElementById("toWallet").value];
+  const from = accountById(document.getElementById("fromWallet").value);
+  const to = accountById(document.getElementById("toWallet").value);
   document.getElementById("routeFrom").textContent = from.name;
   document.getElementById("routeTo").textContent = to.name;
-  document.getElementById("destMsisdn").value = MSISDN[to.id];
+  document.getElementById("destMsisdn").value = to.ref;
   const amt = parseFloat(document.getElementById("amount").value) || 0;
   const fee = amt * (from.fee + to.fee) / 2;
   document.getElementById("feeLine").textContent =
@@ -48,11 +70,11 @@ function doTransfer() {
   const amt = parseFloat(document.getElementById("amount").value) || 0;
   const result = document.getElementById("transferResult");
 
-  if (fromId === toId) { toast("Choose two different wallets"); return; }
+  if (fromId === toId) { toast("Choose two different accounts"); return; }
   if (amt <= 0) { toast("Enter an amount"); return; }
-  if (amt > balances[fromId]) { toast("Not enough balance in " + BW.WALLETS[fromId].name); return; }
+  if (amt > balances[fromId]) { toast("Not enough balance in " + accountById(fromId).name); return; }
 
-  const from = BW.WALLETS[fromId], to = BW.WALLETS[toId];
+  const from = accountById(fromId), to = accountById(toId);
   const fee = amt * (from.fee + to.fee) / 2;
   const net = amt - fee;
 
@@ -60,10 +82,10 @@ function doTransfer() {
   balances[toId] += net;
   store.set("balances", balances);
 
-  const reference = ref("TSL");
+  const reference = ref("AGW");
   txns.unshift({
-    title: `Wallet sweep · ${from.name} → ${to.name}`,
-    wallet: "Cross-wallet", dir: "out", amount: amt, when: "Just now"
+    title: `Settlement · ${from.name} to ${to.name}`,
+    wallet: "Cross-network", dir: "out", amount: amt, when: "Just now"
   });
   store.set("txns", txns);
 
@@ -75,8 +97,8 @@ function doTransfer() {
     <div class="receipt">
       <strong>Transfer settled (simulated)</strong>
       <div class="row"><span>Reference</span><span class="mono">${reference}</span></div>
-      <div class="row"><span>From</span><span>${from.name} · +267 ${MSISDN[fromId]}</span></div>
-      <div class="row"><span>To</span><span>${to.name} · +267 ${document.getElementById("destMsisdn").value}</span></div>
+      <div class="row"><span>From</span><span>${from.name} · ${from.ref}</span></div>
+      <div class="row"><span>To</span><span>${to.name} · ${document.getElementById("destMsisdn").value}</span></div>
       <div class="row"><span>Amount sent</span><span class="mono">${P(amt)}</span></div>
       <div class="row"><span>Settlement fee</span><span class="mono">-${P(fee)}</span></div>
       <div class="row"><strong>Received</strong><strong class="mono">${P(net)}</strong></div>
@@ -103,6 +125,7 @@ function renderLoan() {
   const checks = [
     { label: "6 months of settled sales on AgriWise", done: true },
     { label: "Income recorded on more than one wallet", done: true },
+    { label: "Bank account linked (FNB / ABSA)", done: true },
     { label: "Published stall listing (proof of trade)", done: !!listing },
     { label: "CIPA business registration uploaded", done: false },
     { label: "Land board / lease certificate uploaded", done: false },
@@ -122,6 +145,7 @@ const SUGGESTIONS = [
   "What should I plant next season?",
   "What are prices doing?",
   "Where is the demand?",
+  "Which payment methods should I accept?",
   "Prepare me for an ABSA loan",
   "Tell me about tomatoes"
 ];
@@ -144,6 +168,9 @@ function ask(text) {
 function fillLocations() {
   document.getElementById("adLocation").innerHTML =
     BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
+  document.getElementById("adBank").innerHTML =
+    `<option value="">No bank account</option>` +
+    Object.values(BW.BANKS).map(b => `<option value="${b.id}">${b.name}</option>`).join("");
 }
 
 function handleAdImages(e) {
@@ -176,6 +203,10 @@ function publishListing(e) {
     blurb: val("adBlurb"),
     items: val("adItems").split(",").map(s => s.trim()).filter(Boolean),
     wallets: { orange: val("adOrange"), smega: val("adSmega"), myzaka: val("adMyzaka") },
+    bank: document.getElementById("adBank").value
+      ? { id: document.getElementById("adBank").value, account: val("adAccount") }
+      : null,
+    cards: true,
     img: uploaded[0] || "",
     gallery: uploaded,
     rating: 5.0,
@@ -240,19 +271,19 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("exportBtn").addEventListener("click", () => {
     const income = txns.filter(t => t.dir === "in").reduce((a, b) => a + b.amount, 0);
     const lines = [
-      "TSELA FARM MARKET — INCOME STATEMENT (simulated)",
+      "AGRIWISE — INCOME STATEMENT (simulated)",
       "Farmer: Mmapula Kgosi · Mmapula Fresh Produce · Gaborone",
       "Generated: " + new Date().toDateString(),
       "",
       "Settled income on record: " + P(income),
-      "Wallets: Orange Money, Smega, MyZaka",
+      "Accounts: Orange Money, Smega, MyZaka, FNB Botswana, ABSA Botswana",
       "",
       ...txns.map(t => `${t.when} | ${t.wallet} | ${t.dir === "in" ? "+" : "-"}${P(t.amount)} | ${t.title}`)
     ].join("\n");
     const blob = new Blob([lines], { type: "text/plain" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "tsela-income-statement.txt";
+    a.download = "agriwise-income-statement.txt";
     a.click();
     toast("Income statement downloaded");
   });

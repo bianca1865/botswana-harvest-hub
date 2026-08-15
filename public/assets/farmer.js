@@ -167,7 +167,7 @@ function ask(text) {
 /* ---------- advertise ---------- */
 function fillLocations() {
   document.getElementById("adLocation").innerHTML =
-    BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
+    locationOptions();
   document.getElementById("adBank").innerHTML =
     `<option value="">No bank account</option>` +
     Object.values(BW.BANKS).map(b => `<option value="${b.id}">${b.name}</option>`).join("");

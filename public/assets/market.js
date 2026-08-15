@@ -50,7 +50,7 @@ function renderStalls() {
 
   document.getElementById("resultCount").textContent =
     list.length + (list.length === 1 ? " stall" : " stalls") +
-    (filters.location === "all" ? " across Botswana" : " in " + filters.location);
+    (filters.location === "all" ? " in " + userCountry() : " in " + filters.location);
   document.getElementById("emptyState").style.display = list.length ? "none" : "block";
 
   grid.querySelectorAll(".stall-card").forEach(card =>
@@ -144,7 +144,7 @@ function openStall(id) {
       </div>
 
       <h3 style="margin-top:26px">Pay this stall</h3>
-      <p class="small muted">Mobile wallets, Botswana banks (FNB, ABSA, Stanbic, Standard Chartered) and global cards or PayPal all settle to the farmer.</p>
+      <p class="small muted">Wallets, banks and cards all settle to the farmer.</p>
       <div id="walletChoice">${methodGroupsHtml(s, selectedWallet)}</div>
       <div class="field-row">
         <div class="field">
@@ -163,7 +163,7 @@ function openStall(id) {
       <p class="small muted" id="buyTotal"></p>
       <button class="btn btn-primary btn-block" id="payBtn">Pay now</button>
       <div id="payResult"></div>
-      <p class="notice" style="margin-top:16px">Simulated payment. In production AgriWise settles between Orange Money, Smega, MyZaka, Botswana banks such as FNB and ABSA, and global card or online methods, so any buyer method can pay any farmer account.</p>
+      <p class="notice" style="margin-top:16px">Simulated payment. No real funds move.</p>
     </div>`;
 
   document.getElementById("modal").classList.add("open");
@@ -271,8 +271,8 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-season-name]").forEach(el => el.textContent = "In season: " + season.name);
 
   document.getElementById("fLocation").innerHTML =
-    `<option value="all">All of Botswana</option>` + BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
-  document.getElementById("pLocation").innerHTML = BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
+    `<option value="all">All of ${userCountry()}</option>` + locationOptions();
+  document.getElementById("pLocation").innerHTML = locationOptions();
   document.getElementById("pBank").innerHTML =
     `<option value="">No bank account</option>` + Object.values(BW.BANKS).map(b => `<option value="${b.id}">${b.name}</option>`).join("");
   document.getElementById("pPreferred").innerHTML = paymentOptions();

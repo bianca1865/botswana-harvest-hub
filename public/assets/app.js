@@ -87,7 +87,7 @@ function currentAccount() { return store.get("account", null); }
 
 function signOut() {
   store.set("account", null);
-  location.href = "/home.html";
+  location.href = "/index.html";
 }
 
 function requireRole(role) {

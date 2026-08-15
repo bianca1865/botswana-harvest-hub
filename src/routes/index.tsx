@@ -4,7 +4,7 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 // "/" simply forwards to the static entry page.
 export const Route = createFileRoute("/")({
   beforeLoad: () => {
-    throw redirect({ href: "/home.html" });
+    throw redirect({ href: "/index.html" });
   },
   head: () => ({
     meta: [

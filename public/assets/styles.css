@@ -163,7 +163,6 @@ section { padding: 56px 0; }
   padding: 16px; transition: .18s ease;
 }
 .produce-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-.produce-emoji { font-size: 1.8rem; line-height: 1; }
 .produce-card h4 { font-family: var(--serif); font-size: 1.05rem; margin: 10px 0 4px; }
 .produce-price { font-weight: 700; font-size: .92rem; }
 .trend { font-size: .78rem; font-weight: 700; }

@@ -8,13 +8,13 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "Tsela Farm Market — Botswana seasonal produce & mobile wallets" },
+      { title: "AgriWise Farm Market — Botswana seasonal produce & mobile wallets" },
       {
         name: "description",
         content:
           "Farmers track Orange Money, Smega and MyZaka in one dashboard; shoppers browse seasonal produce stalls across Botswana.",
       },
-      { property: "og:title", content: "Tsela Farm Market" },
+      { property: "og:title", content: "AgriWise Farm Market" },
       {
         property: "og:description",
         content:

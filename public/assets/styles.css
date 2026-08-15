@@ -334,3 +334,9 @@ input:focus, select:focus, textarea:focus { border-color: var(--green-600); box-
   .site-header .wrap { height: auto; padding-top: 12px; padding-bottom: 12px; flex-wrap: wrap; }
   .wallet-choice { grid-template-columns: 1fr; }
 }
+
+/* fixes */
+.btn { white-space: nowrap; }
+.band .produce-card { color: var(--ink); }
+.band .produce-card h4 { color: var(--ink); }
+.band .produce-card .muted { color: var(--ink-soft); }

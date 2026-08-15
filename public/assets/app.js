@@ -37,7 +37,7 @@ function trendLabel(t) {
 function produceCard(p) {
   return `
     <article class="produce-card">
-      <div class="produce-emoji">${p.emoji}</div>
+      <div class="produce-mono">${p.name.charAt(0)}</div>
       <h4>${p.name}</h4>
       <div class="produce-price mono">${P(p.price)} <span class="muted small">/ ${p.unit}</span></div>
       <div class="trend ${p.trend}">${trendLabel(p.trend)}</div>
@@ -60,6 +60,26 @@ function renderSeasonBlock(opts) {
 
 function setYear() {
   document.querySelectorAll("[data-year]").forEach(el => { el.textContent = new Date().getFullYear(); });
+}
+
+/* every payment method AgriWise supports, as <option> markup */
+function paymentOptions() {
+  const groups = [
+    ["Mobile wallets", Object.values(BW.WALLETS).map(w => [w.id, w.name])],
+    ["Botswana banks", Object.values(BW.BANKS).map(b => ["bank:" + b.id, b.name])],
+    ["Global payments", Object.values(BW.GLOBAL).map(g => ["global:" + g.id, g.name])]
+  ];
+  return groups.map(([label, items]) =>
+    `<optgroup label="${label}">` +
+    items.map(([v, n]) => `<option value="${v}">${n}</option>`).join("") +
+    `</optgroup>`).join("");
+}
+
+function methodName(id) {
+  if (!id) return "";
+  const key = id.indexOf(":") > -1 ? id.split(":")[1] : id;
+  const m = BW.METHODS[key];
+  return m ? m.name : id;
 }
 
 /* ---------- accounts & roles (prototype, localStorage only) ---------- */

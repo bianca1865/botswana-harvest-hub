@@ -44,7 +44,7 @@ function renderStalls() {
         <div class="tags">
           ${s.items.slice(0, 4).map(i => `<span class="pill ${inSeason.includes(i) ? "" : "line"}">${i}</span>`).join("")}
         </div>
-        <div class="wallet-dots">${walletDots(s.wallets)} <span class="small muted">accepted here</span></div>
+        <div class="wallet-dots">${walletDots(s.wallets)} <span class="small muted">wallets, ${s.bank && BW.BANKS[s.bank.id] ? BW.BANKS[s.bank.id].short : "bank"} transfer &amp; cards</span></div>
       </div>
     </article>`).join("");
 
@@ -248,6 +248,9 @@ function loadProfile() {
   ["orange", "smega", "myzaka"].forEach(k => {
     if (p[k]) document.getElementById("p" + k.charAt(0).toUpperCase() + k.slice(1)).value = p[k];
   });
+  if (p.bank) document.getElementById("pBank").value = p.bank;
+  if (p.account) document.getElementById("pAccount").value = p.account;
+  if (p.card) document.getElementById("pCard").value = p.card;
   if (p.preferred) document.getElementById("pPreferred").value = p.preferred;
 }
 
@@ -267,7 +270,7 @@ document.addEventListener("DOMContentLoaded", function () {
     BW.produceFor(season.key).slice(0, 8).map(p => `<button class="chip" type="button">${p.name}</button>`).join("");
   document.querySelectorAll("#seasonChips .chip").forEach(chip =>
     chip.addEventListener("click", () => {
-      const name = chip.textContent.trim().split(" ").slice(1).join(" ");
+      const name = chip.textContent.trim();
       filters.produce = filters.produce === name ? "all" : name;
       document.getElementById("fProduce").value = filters.produce;
       document.querySelectorAll("#seasonChips .chip").forEach(c => c.classList.remove("active"));

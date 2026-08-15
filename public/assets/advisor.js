@@ -66,6 +66,17 @@ function advisorAnswer(input) {
     ].join("\n");
   }
 
+  if (/bank|fnb|absa|stanbic|card|visa|mastercard|paypal|international|global/.test(q) && !/loan|credit|collateral/.test(q)) {
+    return [
+      "Payment methods you can accept on AgriWise:",
+      "• Mobile wallets: Orange Money, Smega and MyZaka, settled between each other by AgriWise.",
+      "• Botswana banks: FNB, ABSA, Stanbic and Standard Chartered — buyers can pay straight into your account, and bank-settled income is the record lenders trust most.",
+      "• Global methods: Visa, Mastercard, PayPal and SWIFT wires for lodges, exporters and diaspora buyers. Fees run 1.5–3.4%, so quote bulk buyers accordingly.",
+      "",
+      "Accept at least one wallet and one bank account — that combination covers almost every buyer walking up to a Botswana stall."
+    ].join("\n");
+  }
+
   if (/wallet|orange|smega|myzaka|transfer|payment|money/.test(q)) {
     return [
       "Wallet strategy:",
@@ -81,6 +92,7 @@ function advisorAnswer(input) {
       "• What will thrive next season and when to start seedlings",
       "• Current and forecast pricing per crop",
       "• Where the demand is and who to sell to",
+      "• Payment methods: wallets, FNB and ABSA bank transfers, cards and PayPal",
       "• Getting your paperwork ready for an ABSA loan",
       "• Water, frost and pest risks for the current season",
       "",
@@ -93,7 +105,7 @@ function advisorAnswer(input) {
     const inSeason = match.seasons.includes(cur.key);
     const seasonNames = match.seasons.map(k => BW.SEASONS[k].name).join(" and ");
     return [
-      `${match.emoji} ${match.name}`,
+      match.name,
       `Best seasons: ${seasonNames}.`,
       `Right now (${cur.name}) it is ${inSeason ? "in season — plant and sell with confidence" : "out of its strong window, so expect thinner yields and higher input cost"}.`,
       `Indicative price: ${P(match.price)} per ${match.unit} (${trendLabel(match.trend)}).`,

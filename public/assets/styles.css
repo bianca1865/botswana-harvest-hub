@@ -340,3 +340,17 @@ input:focus, select:focus, textarea:focus { border-color: var(--green-600); box-
 .band .produce-card { color: var(--ink); }
 .band .produce-card h4 { color: var(--ink); }
 .band .produce-card .muted { color: var(--ink-soft); }
+
+/* ---- image placeholders (no stock photography) ---- */
+.media-placeholder {
+  width: 100%; height: 100%; min-height: 140px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  background:
+    repeating-linear-gradient(135deg, rgba(0,0,0,.035) 0 12px, transparent 12px 24px),
+    var(--cream-2);
+  color: var(--ink); opacity: .85; text-align: center;
+}
+.media-placeholder .ph-emoji { font-size: 2.4rem; line-height: 1; }
+.hero-media-empty { aspect-ratio: 8/5.4; }
+.modal .media-placeholder.cover { aspect-ratio: 16/8; }
+.nav-account { font-weight: 700; }

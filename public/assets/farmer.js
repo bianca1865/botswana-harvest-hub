@@ -176,7 +176,7 @@ function publishListing(e) {
     blurb: val("adBlurb"),
     items: val("adItems").split(",").map(s => s.trim()).filter(Boolean),
     wallets: { orange: val("adOrange"), smega: val("adSmega"), myzaka: val("adMyzaka") },
-    img: uploaded[0] || "/images/stall-1.jpg",
+    img: uploaded[0] || "",
     gallery: uploaded,
     rating: 5.0,
     delivery: "Contact the farmer to arrange collection or delivery",

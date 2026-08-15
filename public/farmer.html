@@ -22,9 +22,10 @@
     <a class="brand" href="/home.html">AgriWise <span>Botswana</span></a>
     <nav class="nav">
       <a href="/home.html">Home</a>
-      <a href="/farmer.html" class="active">Farmer dashboard</a>
-      <a href="/market.html">Marketplace</a>
+      <a data-role-only="farmer" href="/farmer.html" class="active">Farmer dashboard</a>
+      <a data-role-only="consumer" href="/market.html">Marketplace</a>
       <a class="btn btn-primary btn-sm" href="#advertise">Advertise stall</a>
+      <a class="nav-account" href="/signup.html" data-account>Sign up</a>
     </nav>
   </div>
 </header>
@@ -216,7 +217,7 @@
         <p class="small" style="opacity:.7;max-width:34ch">Wallet balances, transfers and payouts shown here are simulated for demonstration.</p>
       </div>
       <div><strong class="small">Farmers</strong><a href="/farmer.html#transfer">Transfers</a><a href="/farmer.html#advisor">AI advisor</a><a href="/farmer.html#advertise">Advertise</a></div>
-      <div><strong class="small">Shoppers</strong><a href="/market.html">Marketplace</a><a href="/market.html#profile">Profile</a></div>
+      <div><strong class="small">Shoppers</strong><a data-role-only="consumer" href="/market.html">Marketplace</a><a href="/market.html#profile">Profile</a></div>
       <div><strong class="small">Wallets</strong><a href="/home.html#split">Orange Money</a><a href="/home.html#split">Smega</a><a href="/home.html#split">MyZaka</a></div>
     </div>
     <div class="footer-bottom">© <span data-year></span> AgriWise · Gaborone, Botswana · Prototype build</div>

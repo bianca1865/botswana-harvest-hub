@@ -37,7 +37,7 @@ function renderStalls() {
 
   grid.innerHTML = list.map(s => `
     <article class="stall-card" data-id="${s.id}">
-      <div class="thumb"><img src="${s.img}" alt="${s.name} produce stall in ${s.location}" loading="lazy" /></div>
+      <div class="thumb">${thumbFor(s)}</div>
       <div class="stall-body">
         <h3>${s.name}</h3>
         <div class="small muted">${s.location}${s.area ? " · " + s.area : ""} · ★ ${s.rating}</div>
@@ -57,6 +57,23 @@ function renderStalls() {
     card.addEventListener("click", () => openStall(card.dataset.id)));
 }
 
+function stallEmoji(s) {
+  const first = (s.items || []).map(priceOf).find(p => p.emoji);
+  return first ? first.emoji : "🧺";
+}
+
+function thumbFor(s) {
+  return s.img
+    ? `<img src="${s.img}" alt="${s.name} produce stall in ${s.location}" loading="lazy" />`
+    : `<div class="media-placeholder"><span class="ph-emoji">${stallEmoji(s)}</span></div>`;
+}
+
+function coverFor(s) {
+  return s.img
+    ? `<img class="cover" src="${s.img}" alt="${s.name}" />`
+    : `<div class="media-placeholder cover"><span class="ph-emoji">${stallEmoji(s)}</span></div>`;
+}
+
 /* ---------- stall modal + simulated checkout ---------- */
 function openStall(id) {
   const s = allStalls().find(x => x.id === id);
@@ -67,7 +84,7 @@ function openStall(id) {
                    ["orange", "smega", "myzaka"].find(k => s.wallets[k]);
 
   document.getElementById("modalContent").innerHTML = `
-    <img class="cover" src="${s.img}" alt="${s.name}" />
+    ${coverFor(s)}
     <div class="modal-body">
       <div class="eyebrow">${s.location}${s.area ? " · " + s.area : ""}</div>
       <h2 style="margin-bottom:8px">${s.name}</h2>

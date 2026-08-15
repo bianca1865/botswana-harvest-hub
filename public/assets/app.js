@@ -62,4 +62,37 @@ function setYear() {
   document.querySelectorAll("[data-year]").forEach(el => { el.textContent = new Date().getFullYear(); });
 }
 
-document.addEventListener("DOMContentLoaded", setYear);
+/* ---------- accounts & roles (prototype, localStorage only) ---------- */
+function currentAccount() { return store.get("account", null); }
+
+function signOut() {
+  store.set("account", null);
+  location.href = "/home.html";
+}
+
+function requireRole(role) {
+  const acc = currentAccount();
+  if (!acc) { location.href = "/signup.html?role=" + role; return false; }
+  if (acc.role !== role) {
+    location.href = acc.role === "farmer" ? "/farmer.html" : "/market.html";
+    return false;
+  }
+  return true;
+}
+
+function applyAccountUI() {
+  const acc = currentAccount();
+  document.querySelectorAll("[data-role-only]").forEach(el => {
+    el.style.display = acc && el.dataset.roleOnly !== acc.role ? "none" : "";
+  });
+  document.querySelectorAll("[data-account]").forEach(el => {
+    el.textContent = acc ? "Sign out (" + (acc.name || acc.role) + ")" : "Sign up";
+    el.href = acc ? "#" : "/signup.html";
+    if (acc) el.addEventListener("click", e => { e.preventDefault(); signOut(); });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  setYear();
+  applyAccountUI();
+});

@@ -22,9 +22,10 @@
     <a class="brand" href="/home.html">AgriWise <span>Botswana</span></a>
     <nav class="nav">
       <a href="/home.html" class="active">Home</a>
-      <a href="/farmer.html">Farmer dashboard</a>
-      <a href="/market.html">Marketplace</a>
+      <a data-role-only="farmer" href="/farmer.html">Farmer dashboard</a>
+      <a data-role-only="consumer" href="/market.html">Marketplace</a>
       <a class="btn btn-primary btn-sm" href="/market.html">Shop seasonal</a>
+      <a class="nav-account" href="/signup.html" data-account>Sign up</a>
     </nav>
   </div>
 </header>
@@ -37,12 +38,15 @@
         <h1>Eat what the season is actually growing.</h1>
         <p class="lead">AgriWise splits in two. Farmers get one dashboard for Orange Money, Smega and MyZaka, seasonal planting guidance and an AI market advisor. Shoppers get a live map of produce stalls near them.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="/farmer.html">I'm a farmer →</a>
-          <a class="btn btn-ghost" href="/market.html">I'm shopping →</a>
+          <a class="btn btn-primary" href="/signup.html">Create your account →</a>
+          <a class="btn btn-ghost" href="/signup.html?role=consumer">Browse as a shopper →</a>
         </div>
       </div>
-      <div class="hero-media">
-        <img src="/images/hero.jpg" alt="Farmer standing behind crates of tomatoes, morogo and green maize at a roadside stall in Botswana" width="1600" height="1008" />
+      <div class="hero-media hero-media-empty">
+        <div class="media-placeholder">
+          <span class="ph-emoji">🌱</span>
+          <span class="small">Photography coming soon</span>
+        </div>
         <div class="hero-badge">In season now: <strong data-season-name>—</strong></div>
       </div>
     </div>
@@ -62,7 +66,7 @@
             <li>Loan-readiness pack for ABSA and other banks</li>
             <li>Advertise your stall with photos, location and wallet details</li>
           </ul>
-          <a class="btn btn-primary" href="/farmer.html">Open the dashboard</a>
+          <a class="btn btn-primary" href="/signup.html?role=farmer">Sign up as a farmer</a>
         </div>
         <div class="split-card">
           <div class="eyebrow">Side two · the consumer</div>
@@ -75,7 +79,7 @@
             <li>Store your wallet details once in your profile</li>
             <li>Message the farmer directly before you buy</li>
           </ul>
-          <a class="btn btn-primary" href="/market.html">Browse the marketplace</a>
+          <a class="btn btn-primary" href="/signup.html?role=consumer">Sign up as a shopper</a>
         </div>
       </div>
     </div>
@@ -131,13 +135,13 @@
       </div>
       <div>
         <strong class="small">Farmers</strong>
-        <a href="/farmer.html">Dashboard</a>
+        <a data-role-only="farmer" href="/farmer.html">Dashboard</a>
         <a href="/farmer.html#advertise">Advertise a stall</a>
         <a href="/farmer.html#advisor">AI advisor</a>
       </div>
       <div>
         <strong class="small">Shoppers</strong>
-        <a href="/market.html">Marketplace</a>
+        <a data-role-only="consumer" href="/market.html">Marketplace</a>
         <a href="/market.html#profile">My profile</a>
       </div>
       <div>

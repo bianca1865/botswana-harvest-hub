@@ -157,8 +157,8 @@ function openStall(id) {
         </div>
       </div>
       <div class="field">
-        <label for="buyMsisdn">Your mobile number</label>
-        <input id="buyMsisdn" type="tel" placeholder="76 000 000" value="${profileValueFor(selectedWallet)}" />
+        <label for="buyMsisdn">Your number, account or card</label>
+        <input id="buyMsisdn" type="text" placeholder="76 000 000 / 1042 887 331" value="${profileValueFor(selectedWallet)}" />
       </div>
       <p class="small muted" id="buyTotal"></p>
       <button class="btn btn-primary btn-block" id="payBtn">Pay now</button>

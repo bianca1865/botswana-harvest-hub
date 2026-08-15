@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Farmer dashboard — wallets, seasons & AI advisor | Tsela</title>
+<title>Farmer dashboard — wallets, seasons & AI advisor | AgriWise</title>
 <meta name="description" content="Track Orange Money, Smega and MyZaka balances in one dashboard, sweep funds between wallets, see seasonal produce guidance, prepare for an ABSA loan and advertise your stall." />
-<meta property="og:title" content="Farmer dashboard — wallets, seasons & AI advisor | Tsela" />
+<meta property="og:title" content="Farmer dashboard — wallets, seasons & AI advisor | AgriWise" />
 <meta property="og:description" content="One balance across Orange Money, Smega and MyZaka, seasonal planting guidance, an AI market advisor and loan readiness for Botswana farmers." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -19,12 +19,13 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="/home.html">Tsela <span>Farm Market</span></a>
+    <a class="brand" href="/home.html">AgriWise <span>Botswana</span></a>
     <nav class="nav">
       <a href="/home.html">Home</a>
-      <a href="/farmer.html" class="active">Farmer dashboard</a>
-      <a href="/market.html">Marketplace</a>
+      <a data-role-only="farmer" href="/farmer.html" class="active">Farmer dashboard</a>
+      <a data-role-only="consumer" href="/market.html">Marketplace</a>
       <a class="btn btn-primary btn-sm" href="#advertise">Advertise stall</a>
+      <a class="nav-account" href="/signup.html" data-account>Sign up</a>
     </nav>
   </div>
 </header>
@@ -57,7 +58,7 @@
             <h3>Cross-wallet transfer</h3>
             <span class="pill ochre">The missing tunnel</span>
           </div>
-          <p class="muted small">Botswana wallets don't talk to each other. Tsela settles between them so a payment received on one wallet can land on another.</p>
+          <p class="muted small">Botswana wallets don't talk to each other. AgriWise settles between them so a payment received on one wallet can land on another.</p>
           <div class="route-line">
             <span id="routeFrom">MyZaka</span>
             <span class="arrow">⟶</span>
@@ -212,14 +213,14 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <div class="brand" style="color:var(--cream)">Tsela <span>Farm Market</span></div>
+        <div class="brand" style="color:var(--cream)">AgriWise <span>Botswana</span></div>
         <p class="small" style="opacity:.7;max-width:34ch">Wallet balances, transfers and payouts shown here are simulated for demonstration.</p>
       </div>
       <div><strong class="small">Farmers</strong><a href="/farmer.html#transfer">Transfers</a><a href="/farmer.html#advisor">AI advisor</a><a href="/farmer.html#advertise">Advertise</a></div>
-      <div><strong class="small">Shoppers</strong><a href="/market.html">Marketplace</a><a href="/market.html#profile">Profile</a></div>
+      <div><strong class="small">Shoppers</strong><a data-role-only="consumer" href="/market.html">Marketplace</a><a href="/market.html#profile">Profile</a></div>
       <div><strong class="small">Wallets</strong><a href="/home.html#split">Orange Money</a><a href="/home.html#split">Smega</a><a href="/home.html#split">MyZaka</a></div>
     </div>
-    <div class="footer-bottom">© <span data-year></span> Tsela Farm Market · Gaborone, Botswana · Prototype build</div>
+    <div class="footer-bottom">© <span data-year></span> AgriWise · Gaborone, Botswana · Prototype build</div>
   </div>
 </footer>
 

@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tsela Farm Market — Botswana seasonal produce & mobile wallets</title>
+<title>AgriWise — Botswana seasonal produce & mobile wallets</title>
 <meta name="description" content="Botswana's split marketplace: farmers track Orange Money, Smega and MyZaka balances in one dashboard, consumers shop seasonal produce stalls nearby." />
-<meta property="og:title" content="Tsela Farm Market — Botswana seasonal produce & mobile wallets" />
+<meta property="og:title" content="AgriWise — Botswana seasonal produce & mobile wallets" />
 <meta property="og:description" content="One dashboard for Orange Money, Smega and MyZaka. A marketplace of seasonal produce stalls across Botswana." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -19,12 +19,13 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="/home.html">Tsela <span>Farm Market</span></a>
+    <a class="brand" href="/home.html">AgriWise <span>Botswana</span></a>
     <nav class="nav">
       <a href="/home.html" class="active">Home</a>
-      <a href="/farmer.html">Farmer dashboard</a>
-      <a href="/market.html">Marketplace</a>
-      <a class="btn btn-primary btn-sm" href="/market.html">Shop seasonal</a>
+      <a data-role-only="farmer" href="/farmer.html">Farmer dashboard</a>
+      <a data-role-only="consumer" href="/market.html">Marketplace</a>
+      <a data-role-only="consumer" class="btn btn-primary btn-sm" href="/market.html">Shop seasonal</a>
+      <a class="nav-account" href="/signup.html" data-account>Sign up</a>
     </nav>
   </div>
 </header>
@@ -35,14 +36,17 @@
       <div>
         <div class="eyebrow">Botswana · farm to table</div>
         <h1>Eat what the season is actually growing.</h1>
-        <p class="lead">Tsela splits in two. Farmers get one dashboard for Orange Money, Smega and MyZaka, seasonal planting guidance and an AI market advisor. Shoppers get a live map of produce stalls near them.</p>
+        <p class="lead">AgriWise splits in two. Farmers get one dashboard for Orange Money, Smega and MyZaka, seasonal planting guidance and an AI market advisor. Shoppers get a live map of produce stalls near them.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="/farmer.html">I'm a farmer →</a>
-          <a class="btn btn-ghost" href="/market.html">I'm shopping →</a>
+          <a class="btn btn-primary" href="/signup.html">Create your account →</a>
+          <a class="btn btn-ghost" href="/signup.html?role=consumer">Browse as a shopper →</a>
         </div>
       </div>
-      <div class="hero-media">
-        <img src="/images/hero.jpg" alt="Farmer standing behind crates of tomatoes, morogo and green maize at a roadside stall in Botswana" width="1600" height="1008" />
+      <div class="hero-media hero-media-empty">
+        <div class="media-placeholder">
+          <span class="ph-emoji">🌱</span>
+          <span class="small">Photography coming soon</span>
+        </div>
         <div class="hero-badge">In season now: <strong data-season-name>—</strong></div>
       </div>
     </div>
@@ -62,7 +66,7 @@
             <li>Loan-readiness pack for ABSA and other banks</li>
             <li>Advertise your stall with photos, location and wallet details</li>
           </ul>
-          <a class="btn btn-primary" href="/farmer.html">Open the dashboard</a>
+          <a class="btn btn-primary" href="/signup.html?role=farmer">Sign up as a farmer</a>
         </div>
         <div class="split-card">
           <div class="eyebrow">Side two · the consumer</div>
@@ -75,7 +79,7 @@
             <li>Store your wallet details once in your profile</li>
             <li>Message the farmer directly before you buy</li>
           </ul>
-          <a class="btn btn-primary" href="/market.html">Browse the marketplace</a>
+          <a class="btn btn-primary" href="/signup.html?role=consumer">Sign up as a shopper</a>
         </div>
       </div>
     </div>
@@ -104,7 +108,7 @@
         <div class="card">
           <span class="pill">01</span>
           <h3 style="margin-top:14px">Every wallet accepted</h3>
-          <p class="muted small">A buyer on Smega can pay a farmer whose money sits in Orange Money. Tsela routes the settlement so nobody is turned away at checkout.</p>
+          <p class="muted small">A buyer on Smega can pay a farmer whose money sits in Orange Money. AgriWise routes the settlement so nobody is turned away at checkout.</p>
         </div>
         <div class="card">
           <span class="pill">02</span>
@@ -126,18 +130,18 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <div class="brand" style="color:var(--cream)">Tsela <span>Farm Market</span></div>
+        <div class="brand" style="color:var(--cream)">AgriWise <span>Botswana</span></div>
         <p class="small" style="opacity:.7;max-width:34ch">Connecting Botswana's smallholder farmers and households through seasonal produce and mobile money.</p>
       </div>
       <div>
         <strong class="small">Farmers</strong>
-        <a href="/farmer.html">Dashboard</a>
+        <a data-role-only="farmer" href="/farmer.html">Dashboard</a>
         <a href="/farmer.html#advertise">Advertise a stall</a>
         <a href="/farmer.html#advisor">AI advisor</a>
       </div>
       <div>
         <strong class="small">Shoppers</strong>
-        <a href="/market.html">Marketplace</a>
+        <a data-role-only="consumer" href="/market.html">Marketplace</a>
         <a href="/market.html#profile">My profile</a>
       </div>
       <div>
@@ -147,7 +151,7 @@
         <a href="/home.html#split">MyZaka</a>
       </div>
     </div>
-    <div class="footer-bottom">© <span data-year></span> Tsela Farm Market · Gaborone, Botswana · Prototype build</div>
+    <div class="footer-bottom">© <span data-year></span> AgriWise · Gaborone, Botswana · Prototype build</div>
   </div>
 </footer>
 

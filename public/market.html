@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Marketplace — produce stalls near you in Botswana | Tsela</title>
+<title>Marketplace — produce stalls near you in Botswana | AgriWise</title>
 <meta name="description" content="Browse advertised produce stalls across Botswana, filter by town, see what's in season and pay with Orange Money, Smega or MyZaka." />
-<meta property="og:title" content="Marketplace — produce stalls near you in Botswana | Tsela" />
+<meta property="og:title" content="Marketplace — produce stalls near you in Botswana | AgriWise" />
 <meta property="og:description" content="Seasonal produce stalls from Gaborone to Kasane, with Orange Money, Smega and MyZaka checkout." />
 <meta property="og:type" content="website" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -19,12 +19,13 @@
 
 <header class="site-header">
   <div class="wrap">
-    <a class="brand" href="/home.html">Tsela <span>Farm Market</span></a>
+    <a class="brand" href="/home.html">AgriWise <span>Botswana</span></a>
     <nav class="nav">
       <a href="/home.html">Home</a>
-      <a href="/farmer.html">Farmer dashboard</a>
-      <a href="/market.html" class="active">Marketplace</a>
+      <a data-role-only="farmer" href="/farmer.html">Farmer dashboard</a>
+      <a data-role-only="consumer" href="/market.html" class="active">Marketplace</a>
       <a class="btn btn-primary btn-sm" href="#profile">My profile</a>
+      <a class="nav-account" href="/signup.html" data-account>Sign up</a>
     </nav>
   </div>
 </header>
@@ -136,14 +137,14 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <div class="brand" style="color:var(--cream)">Tsela <span>Farm Market</span></div>
+        <div class="brand" style="color:var(--cream)">AgriWise <span>Botswana</span></div>
         <p class="small" style="opacity:.7;max-width:34ch">Checkout on this prototype is simulated — no real money moves between wallets.</p>
       </div>
-      <div><strong class="small">Shoppers</strong><a href="/market.html">Marketplace</a><a href="/market.html#profile">Profile</a></div>
-      <div><strong class="small">Farmers</strong><a href="/farmer.html">Dashboard</a><a href="/farmer.html#advertise">Advertise</a></div>
+      <div><strong class="small">Shoppers</strong><a data-role-only="consumer" href="/market.html">Marketplace</a><a href="/market.html#profile">Profile</a></div>
+      <div><strong class="small">Farmers</strong><a data-role-only="farmer" href="/farmer.html">Dashboard</a><a href="/farmer.html#advertise">Advertise</a></div>
       <div><strong class="small">Wallets</strong><a href="/home.html#split">Orange Money</a><a href="/home.html#split">Smega</a><a href="/home.html#split">MyZaka</a></div>
     </div>
-    <div class="footer-bottom">© <span data-year></span> Tsela Farm Market · Gaborone, Botswana · Prototype build</div>
+    <div class="footer-bottom">© <span data-year></span> AgriWise · Gaborone, Botswana · Prototype build</div>
   </div>
 </footer>
 

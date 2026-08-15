@@ -101,7 +101,7 @@ function renderLoan() {
   const income = txns.filter(t => t.dir === "in").reduce((a, b) => a + b.amount, 0);
   const listing = store.get("myStall", null);
   const checks = [
-    { label: "6 months of settled sales on Tsela", done: true },
+    { label: "6 months of settled sales on AgriWise", done: true },
     { label: "Income recorded on more than one wallet", done: true },
     { label: "Published stall listing (proof of trade)", done: !!listing },
     { label: "CIPA business registration uploaded", done: false },
@@ -176,7 +176,7 @@ function publishListing(e) {
     blurb: val("adBlurb"),
     items: val("adItems").split(",").map(s => s.trim()).filter(Boolean),
     wallets: { orange: val("adOrange"), smega: val("adSmega"), myzaka: val("adMyzaka") },
-    img: uploaded[0] || "/images/stall-1.jpg",
+    img: uploaded[0] || "",
     gallery: uploaded,
     rating: 5.0,
     delivery: "Contact the farmer to arrange collection or delivery",
@@ -195,6 +195,7 @@ function publishListing(e) {
 
 /* ---------- boot ---------- */
 document.addEventListener("DOMContentLoaded", function () {
+  if (!requireRole("farmer")) return;
   const season = renderSeasonBlock({
     nameSel: "[data-season-name]",
     monthsSel: "[data-season-months]",

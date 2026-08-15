@@ -1,4 +1,4 @@
-/* Sample data for the Tsela Farm Market prototype (no backend). */
+/* Sample data for the AgriWise prototype (no backend). */
 
 window.BW = (function () {
   const LOCATIONS = [
@@ -87,7 +87,6 @@ window.BW = (function () {
     {
       id: "s1", name: "Mmapula Fresh Produce", owner: "Mmapula Kgosi",
       location: "Gaborone", area: "Block 8, near Riverwalk",
-      img: "/images/stall-1.jpg",
       blurb: "Family plot in Notwane growing tomatoes, morogo and green maize. Fresh cut every morning at 05:00.",
       items: ["Tomatoes", "Morogo (Wild Spinach)", "Green Maize", "Spinach"],
       wallets: { orange: "76 214 889", smega: "71 903 447", myzaka: "" },
@@ -96,7 +95,6 @@ window.BW = (function () {
     {
       id: "s2", name: "Tlokweng Green Gardens", owner: "Kabelo Seretse",
       location: "Tlokweng", area: "Plot 4412, Tlokweng Road",
-      img: "/images/stall-2.jpg",
       blurb: "Drip-irrigated market garden. Cabbage, rape and beetroot all winter, chillies through the dry season.",
       items: ["Cabbage", "Rape (Leafy)", "Beetroot", "Chillies"],
       wallets: { orange: "77 552 130", smega: "", myzaka: "74 118 902" },
@@ -105,7 +103,6 @@ window.BW = (function () {
     {
       id: "s3", name: "Serowe Root Co-op", owner: "Neo Baitshepi",
       location: "Serowe", area: "Main Kgotla road",
-      img: "/images/produce-1.jpg",
       blurb: "Eight-farmer co-operative supplying butternut, sweet potato and carrots in bulk crates.",
       items: ["Butternut", "Sweet Potato", "Carrots", "Onions"],
       wallets: { orange: "", smega: "72 447 018", myzaka: "75 220 664" },
@@ -114,7 +111,6 @@ window.BW = (function () {
     {
       id: "s4", name: "Maun Riverside Veg", owner: "Onalenna Dintwe",
       location: "Maun", area: "Boseja ward, riverside plots",
-      img: "/images/hero.jpg",
       blurb: "Thamalakane river plots. Green beans, peppers and salad greens for lodges and households.",
       items: ["Green Beans", "Green Pepper", "Spinach", "Tomatoes"],
       wallets: { orange: "76 880 145", smega: "71 336 209", myzaka: "74 002 771" },
@@ -123,7 +119,6 @@ window.BW = (function () {
     {
       id: "s5", name: "Kanye Hillside Farm", owner: "Tebogo Molefe",
       location: "Kanye", area: "Ntsweng, off the A2",
-      img: "/images/stall-2.jpg",
       blurb: "Winter brassicas and groundnuts, plus watermelon over the rains. Sells by crate or by kilo.",
       items: ["Cabbage", "Groundnuts", "Watermelon", "Carrots"],
       wallets: { orange: "76 771 553", smega: "", myzaka: "" },
@@ -132,7 +127,6 @@ window.BW = (function () {
     {
       id: "s6", name: "Francistown Urban Greens", owner: "Lesego Phiri",
       location: "Francistown", area: "Tati River industrial edge",
-      img: "/images/produce-1.jpg",
       blurb: "Shade-net tunnels producing leafy greens year round, even through the hot dry months.",
       items: ["Spinach", "Rape (Leafy)", "Green Pepper", "Onions"],
       wallets: { orange: "", smega: "71 664 200", myzaka: "74 559 813" },

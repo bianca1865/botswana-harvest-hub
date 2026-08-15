@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Create your AgriWise account — farmer or shopper</title>
+<meta name="description" content="Sign up to AgriWise as a farmer to manage Orange Money, Smega and MyZaka takings, or as a shopper to buy seasonal produce from stalls across Botswana." />
+<meta property="og:title" content="Create your AgriWise account — farmer or shopper" />
+<meta property="og:description" content="Choose your side once at signup: farmer dashboard or produce marketplace." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/home.html">AgriWise <span>Botswana</span></a>
+    <nav class="nav">
+      <a href="/home.html">Home</a>
+      <a class="nav-account" href="/signup.html" data-account>Sign up</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+      <div class="eyebrow">Create your account</div>
+      <h1 style="max-width:18ch">Are you selling, or are you shopping?</h1>
+      <p class="muted" style="max-width:52ch">Pick once at signup. AgriWise then opens straight into your side of the market — farmers get the wallet dashboard, shoppers get the stalls.</p>
+
+      <div class="grid-2" style="margin-top:28px">
+        <div class="card">
+          <form id="signupForm">
+            <div class="field">
+              <label>I am a…</label>
+              <div class="wallet-choice" id="roleChoice">
+                <button type="button" data-role="farmer">🌾 Farmer<br /><span class="small muted">Sell produce, track wallets</span></button>
+                <button type="button" data-role="consumer">🧺 Shopper<br /><span class="small muted">Buy from stalls near me</span></button>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="sName">Full name</label>
+                <input id="sName" placeholder="Naledi Motlhabane" />
+              </div>
+              <div class="field">
+                <label for="sLocation">Location</label>
+                <select id="sLocation"></select>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="sOrange">Orange Money</label>
+                <input id="sOrange" type="tel" placeholder="76 000 000" />
+              </div>
+              <div class="field">
+                <label for="sSmega">Smega</label>
+                <input id="sSmega" type="tel" placeholder="71 000 000" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="sMyzaka">MyZaka</label>
+                <input id="sMyzaka" type="tel" placeholder="74 000 000" />
+              </div>
+              <div class="field">
+                <label for="sPreferred">Preferred wallet</label>
+                <select id="sPreferred">
+                  <option value="orange">Orange Money</option>
+                  <option value="smega">Smega</option>
+                  <option value="myzaka">MyZaka</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit">Create account</button>
+            <p class="small muted" style="margin-top:12px">Prototype signup — details are saved on this device only, no real account is created.</p>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3>What you get</h3>
+          <div id="roleBlurb"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-bottom">© <span data-year></span> AgriWise · Gaborone, Botswana · Prototype build</div>
+  </div>
+</footer>
+
+<script src="/assets/data.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+  (function () {
+    const params = new URLSearchParams(location.search);
+    let role = params.get("role") === "consumer" ? "consumer" : params.get("role") === "farmer" ? "farmer" : null;
+
+    const BLURB = {
+      farmer: ["One balance across Orange Money, Smega and MyZaka",
+               "Cross-wallet sweeps with transparent fees",
+               "Season-aware planting and pricing guidance",
+               "AI advisor for next season's demand",
+               "Loan-readiness pack for ABSA and other banks",
+               "Advertise your stall to shoppers nearby"],
+      consumer: ["Browse advertised produce stalls like a marketplace",
+                 "Filter by village or town anywhere in Botswana",
+                 "See what's in season and what it costs today",
+                 "Pay with the wallet you already use",
+                 "Wallet details stored once in your profile",
+                 "Order history kept in your profile"]
+    };
+
+    function paint() {
+      document.querySelectorAll("#roleChoice button").forEach(b =>
+        b.classList.toggle("sel", b.dataset.role === role));
+      const list = role ? BLURB[role] : BLURB.farmer.slice(0, 3).concat(BLURB.consumer.slice(0, 3));
+      document.getElementById("roleBlurb").innerHTML =
+        (role ? "" : `<p class="muted small">Choose farmer or shopper to see your side.</p>`) +
+        "<ul>" + list.map(i => `<li>${i}</li>`).join("") + "</ul>";
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("sLocation").innerHTML = BW.LOCATIONS.map(l => `<option>${l}</option>`).join("");
+      document.querySelectorAll("#roleChoice button").forEach(b =>
+        b.addEventListener("click", () => { role = b.dataset.role; paint(); }));
+      paint();
+
+      document.getElementById("signupForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const val = id => document.getElementById(id).value.trim();
+        if (!role) { toast("Choose farmer or shopper"); return; }
+        if (!val("sName")) { toast("Enter your name"); return; }
+        const account = {
+          role,
+          name: val("sName"),
+          location: document.getElementById("sLocation").value,
+          orange: val("sOrange"),
+          smega: val("sSmega"),
+          myzaka: val("sMyzaka"),
+          preferred: document.getElementById("sPreferred").value
+        };
+        store.set("account", account);
+        store.set("profile", account);
+        toast("Welcome to AgriWise, " + account.name.split(" ")[0]);
+        setTimeout(() => {
+          location.href = role === "farmer" ? "/farmer.html" : "/market.html";
+        }, 600);
+      });
+    });
+  })();
+</script>
+</body>
+</html>

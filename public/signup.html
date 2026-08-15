@@ -30,18 +30,19 @@
 <main>
   <section>
     <div class="wrap">
-      <div class="eyebrow">Create your account</div>
-      <h1 style="max-width:18ch">Are you selling, or are you shopping?</h1>
-      <p class="muted" style="max-width:52ch">Pick once at signup. AgriWise then opens straight into your side of the market — farmers get the wallet dashboard, shoppers get the stalls.</p>
+      <div class="eyebrow">Sign up or log in</div>
+      <h1 style="max-width:18ch">Selling, or shopping?</h1>
+      <p class="muted" style="max-width:44ch">Pick your side once. Farmers open the dashboard, shoppers open the stalls.</p>
 
       <div class="grid-2" style="margin-top:28px">
         <div class="card">
+          <div id="loginBox"></div>
           <form id="signupForm">
             <div class="field">
               <label>I am a…</label>
               <div class="wallet-choice" id="roleChoice">
-                <button type="button" data-role="farmer">Farmer<br /><span class="small muted">Sell produce, track payments</span></button>
-                <button type="button" data-role="consumer">Shopper<br /><span class="small muted">Buy from stalls near me</span></button>
+                <button type="button" data-role="farmer">Farmer<br /><span class="small muted">Sell produce</span></button>
+                <button type="button" data-role="consumer">Shopper<br /><span class="small muted">Buy nearby</span></button>
               </div>
             </div>
             <div class="field-row">
@@ -86,14 +87,15 @@
             </div>
             <div class="field-row">
               <div class="field">
-                <label for="sAccount">Bank account number</label>
-                <input id="sAccount" type="text" placeholder="1042 887 331" />
-              </div>
-              <div class="field">
-                <label for="sCard">Card number (Visa / Mastercard)</label>
+                <label for="sCard">Card number</label>
                 <input id="sCard" type="text" placeholder="4111 1111 1111 1111" />
               </div>
+              <div class="field">
+                <label for="sPaypal">PayPal email</label>
+                <input id="sPaypal" type="email" placeholder="you@example.com" />
+              </div>
             </div>
+
             <div class="field-row">
               <div class="field">
                 <label for="sPaypal">PayPal email</label>
